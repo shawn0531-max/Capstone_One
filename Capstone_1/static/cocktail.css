@@ -1,0 +1,46 @@
+@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+
+body {
+    background: rgb(237, 234, 229);
+}
+
+#navImg {
+    height: 3em;
+}
+
+.navbar {
+    background: rgb(61, 122, 128);
+}
+
+#nav_login, #nav_register, #nav_logout, #nav_fav, #nav_drinks, #nav_avatar, #nav_recommends {
+    text-decoration: none;
+    color: rgb(252, 225, 129, 0.8);
+    font-weight: bold;
+}
+
+#nav_login:hover, #nav_register:hover, #nav_logout:hover, #nav_fav:hover, #nav_drinks:hover, #nav_avatar:hover, #nav_recommends:hover {
+    text-decoration: none;
+    cursor: pointer;
+    color: rgb(159, 237, 215);
+}
+
+#logo {
+    height: 250px;
+}
+
+#search_btn:hover {
+    background-color: rgb(61, 122, 128);
+}
+
+.fav-off {
+  color: rgb(61, 122, 128);
+}
+
+.fav-on{
+  color: rgb(252, 225, 129);
+}
+
+.arrow {
+  color: rgb(61, 122, 128);
+}
+
