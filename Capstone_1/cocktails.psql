@@ -1,0 +1,2868 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.3
+-- Dumped by pg_dump version 12.3
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: drinks; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.drinks (
+    id integer NOT NULL,
+    name character varying NOT NULL,
+    content character varying NOT NULL,
+    instructions text NOT NULL,
+    image character varying,
+    glass character varying,
+    drink_type character varying
+);
+
+
+ALTER TABLE public.drinks OWNER TO postgres;
+
+--
+-- Name: drinks_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.drinks_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.drinks_id_seq OWNER TO postgres;
+
+--
+-- Name: drinks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.drinks_id_seq OWNED BY public.drinks.id;
+
+
+--
+-- Name: drinks_ingredients; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.drinks_ingredients (
+    id integer NOT NULL,
+    drink_id integer,
+    ingredient_id integer,
+    amount character varying NOT NULL
+);
+
+
+ALTER TABLE public.drinks_ingredients OWNER TO postgres;
+
+--
+-- Name: drinks_ingredients_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.drinks_ingredients_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.drinks_ingredients_id_seq OWNER TO postgres;
+
+--
+-- Name: drinks_ingredients_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.drinks_ingredients_id_seq OWNED BY public.drinks_ingredients.id;
+
+
+--
+-- Name: favorites; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.favorites (
+    id integer NOT NULL,
+    user_id integer,
+    drink_id integer
+);
+
+
+ALTER TABLE public.favorites OWNER TO postgres;
+
+--
+-- Name: favorites_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.favorites_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.favorites_id_seq OWNER TO postgres;
+
+--
+-- Name: favorites_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.favorites_id_seq OWNED BY public.favorites.id;
+
+
+--
+-- Name: ingredients; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.ingredients (
+    id integer NOT NULL,
+    name character varying NOT NULL
+);
+
+
+ALTER TABLE public.ingredients OWNER TO postgres;
+
+--
+-- Name: ingredients_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.ingredients_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.ingredients_id_seq OWNER TO postgres;
+
+--
+-- Name: ingredients_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.ingredients_id_seq OWNED BY public.ingredients.id;
+
+
+--
+-- Name: ratings; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.ratings (
+    id integer NOT NULL,
+    rating double precision NOT NULL,
+    user_id integer,
+    drink_id integer
+);
+
+
+ALTER TABLE public.ratings OWNER TO postgres;
+
+--
+-- Name: ratings_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.ratings_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.ratings_id_seq OWNER TO postgres;
+
+--
+-- Name: ratings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.ratings_id_seq OWNED BY public.ratings.id;
+
+
+--
+-- Name: recommendations; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.recommendations (
+    id integer NOT NULL,
+    recommender_id integer,
+    recommend_to_user_id integer,
+    drink_id integer
+);
+
+
+ALTER TABLE public.recommendations OWNER TO postgres;
+
+--
+-- Name: recommendations_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.recommendations_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.recommendations_id_seq OWNER TO postgres;
+
+--
+-- Name: recommendations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.recommendations_id_seq OWNED BY public.recommendations.id;
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.users (
+    id integer NOT NULL,
+    username character varying(25) NOT NULL,
+    first_name character varying(20) NOT NULL,
+    last_name character varying(20) NOT NULL,
+    email character varying NOT NULL,
+    password character varying NOT NULL
+);
+
+
+ALTER TABLE public.users OWNER TO postgres;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.users_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_id_seq OWNER TO postgres;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
+-- Name: drinks id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.drinks ALTER COLUMN id SET DEFAULT nextval('public.drinks_id_seq'::regclass);
+
+
+--
+-- Name: drinks_ingredients id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.drinks_ingredients ALTER COLUMN id SET DEFAULT nextval('public.drinks_ingredients_id_seq'::regclass);
+
+
+--
+-- Name: favorites id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.favorites ALTER COLUMN id SET DEFAULT nextval('public.favorites_id_seq'::regclass);
+
+
+--
+-- Name: ingredients id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ingredients ALTER COLUMN id SET DEFAULT nextval('public.ingredients_id_seq'::regclass);
+
+
+--
+-- Name: ratings id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ratings ALTER COLUMN id SET DEFAULT nextval('public.ratings_id_seq'::regclass);
+
+
+--
+-- Name: recommendations id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.recommendations ALTER COLUMN id SET DEFAULT nextval('public.recommendations_id_seq'::regclass);
+
+
+--
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Data for Name: drinks; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.drinks (id, name, content, instructions, image, glass, drink_type) FROM stdin;
+1	A1	Alcoholic	Pour all ingredients into a cocktail shaker, mix and serve over ice into a chilled glass.	https://www.thecocktaildb.com/images/media/drink/2x8thr1504816928.jpg	Cocktail glass	Cocktail
+2	ABC	Alcoholic	Layered in a shot glass.	https://www.thecocktaildb.com/images/media/drink/tqpvqp1472668328.jpg	Shot glass	Shot
+3	Ace	Alcoholic	Shake all the ingredients in a cocktail shaker and ice then strain in a cold glass.	https://www.thecocktaildb.com/images/media/drink/l3cd7f1504818306.jpg	Martini Glass	Cocktail
+4	Adam	Alcoholic	In a shaker half-filled with ice cubes, combine all of the ingredients. Shake well. Strain into a cocktail glass.	https://www.thecocktaildb.com/images/media/drink/v0at4i1582478473.jpg	Cocktail glass	Ordinary Drink
+5	AT&T	Alcoholic	Pour Vodka and Gin over ice, add Tonic and Stir	https://www.thecocktaildb.com/images/media/drink/rhhwmp1493067619.jpg	Highball Glass	Ordinary Drink
+6	ACID	Alcoholic	Poor in the 151 first followed by the 101 served with a Coke or Dr Pepper chaser.	https://www.thecocktaildb.com/images/media/drink/xuxpxt1479209317.jpg	Shot glass	Shot
+7	A. J.	Alcoholic	Shake ingredients with ice, strain into a cocktail glass, and serve.	https://www.thecocktaildb.com/images/media/drink/l74qo91582480316.jpg	Cocktail glass	Ordinary Drink
+8	Affair	Alcoholic	Pour schnapps, orange juice, and cranberry juice over ice in a highball glass. Top with club soda and serve.	https://www.thecocktaildb.com/images/media/drink/h5za6y1582477994.jpg	Highball glass	Ordinary Drink
+9	Apello	Non alcoholic	Stirr. Grnish with maraschino cherry.	https://www.thecocktaildb.com/images/media/drink/uptxtv1468876415.jpg	Collins Glass	Other/Unknown
+10	Avalon	Alcoholic	Fill a tall glass with ice. Layer the Finlandia Vodka, lemon and apple juices, Pisang Ambon, and top up with lemonade. Stir slightly and garnish with a spiralled cucumber skin and a red cherry. The cucumber provides zest and looks attractive. This drink, created by Timo Haimi, took first prize in the 1991 Finlandia Vodka Long Drink Competition.	https://www.thecocktaildb.com/images/media/drink/3k9qic1493068931.jpg	Highball glass	Ordinary Drink
+11	Abilene	Alcoholic	Pour all of the ingredients into a highball glass almost filled with ice cubes. Stir well.	https://www.thecocktaildb.com/images/media/drink/smb2oe1582479072.jpg	Highball glass	Ordinary Drink
+12	Almeria	Alcoholic	In a shaker half-filled with ice cubes, combine all of the ingredients. Shake well. Strain into a cocktail glass.	https://www.thecocktaildb.com/images/media/drink/rwsyyu1483388181.jpg	Cocktail glass	Ordinary Drink
+13	Addison	Alcoholic	Shake together all the ingredients and strain into a cold glass.	https://www.thecocktaildb.com/images/media/drink/yzva7x1504820300.jpg	Martini Glass	Cocktail
+14	Acapulco	Alcoholic	Combine and shake all ingredients (except mint) with ice and strain into an old-fashioned glass over ice cubes. Add the sprig of mint and serve.	https://www.thecocktaildb.com/images/media/drink/il9e0r1582478841.jpg	Old-fashioned glass	Ordinary Drink
+15	Affinity	Alcoholic	In a mixing glass half-filled with ice cubes, combine all of the ingredients. Stir well. Strain into a cocktail glass.	https://www.thecocktaildb.com/images/media/drink/wzdtnn1582477684.jpg	Cocktail glass	Ordinary Drink
+16	Applecar	Alcoholic	Shake all ingredients with ice, strain into a cocktail glass, and serve.	https://www.thecocktaildb.com/images/media/drink/sbffau1504389764.jpg	Cocktail glass	Ordinary Drink
+17	Aviation	Alcoholic	Add all ingredients into cocktail shaker filled with ice. Shake well and strain into cocktail glass. Garnish with a cherry.	https://www.thecocktaildb.com/images/media/drink/ruutxt1478253328.jpg	Cocktail glass	Cocktail
+18	Alexander	Alcoholic	Shake all ingredients with ice and strain contents into a cocktail glass. Sprinkle nutmeg on top and serve.	https://www.thecocktaildb.com/images/media/drink/urystu1478253039.jpg	Cocktail glass	Ordinary Drink
+19	Algonquin	Alcoholic	Combine and shake all ingredients with ice, strain contents into a cocktail glass, and serve.	https://www.thecocktaildb.com/images/media/drink/uwryxx1483387873.jpg	Cocktail glass	Ordinary Drink
+20	Allegheny	Alcoholic	Shake all ingredients (except lemon peel) with ice and strain into a cocktail glass. Top with the twist of lemon peel and serve.	https://www.thecocktaildb.com/images/media/drink/uwvyts1483387934.jpg	Cocktail glass	Ordinary Drink
+21	Artillery	Alcoholic	Stir all ingredients with ice, strain into a cocktail glass, and serve.	https://www.thecocktaildb.com/images/media/drink/g1vnbe1493067747.jpg	Cocktail glass	Ordinary Drink
+22	Afterglow	Non alcoholic	Mix. Serve over ice.	https://www.thecocktaildb.com/images/media/drink/vuquyv1468876052.jpg	Highball Glass	Cocktail
+23	Autodafé	Alcoholic	Mix and fill up with soda water. Drunk by finns on a sunny day any time of the year and day.	https://www.thecocktaildb.com/images/media/drink/7dkf0i1487602928.jpg	Highball glass	Ordinary Drink
+24	Afternoon	Alcoholic	Build into a suiting glass, with no ice. Cream on top if wanted. Served directly.	https://www.thecocktaildb.com/images/media/drink/vyrurp1472667777.jpg	Collins Glass	Coffee / Tea
+25	After sex	Alcoholic	Pour the vodka and creme over some ice cubes in a tall glass and fill up with juice. to make it beuty full make the top of the glass with a grenadine and sugar	https://www.thecocktaildb.com/images/media/drink/xrl66i1493068702.jpg	Highball glass	Ordinary Drink
+26	B-53	Alcoholic	Layer the Kahlua, Sambucca and Grand Marnier into a shot glas in that order. Better than B-52	https://www.thecocktaildb.com/images/media/drink/rwqxrv1461866023.jpg	Collins Glass	Shot
+27	B-52	Alcoholic	Layer ingredients into a shot glass. Serve with a stirrer.	https://www.thecocktaildb.com/images/media/drink/5a3vg61504372070.jpg	Shot glass	Shot
+28	Bijou	Alcoholic	Stir in mixing glass with ice and strain\r\n	https://www.thecocktaildb.com/images/media/drink/rysb3r1513706985.jpg	Cocktail glass	Cocktail
+29	Boxcar	Alcoholic	In a shaker half-filled with ice cubes, combine all of the ingredients. Shake well. Strain into a sour glass.	https://www.thecocktaildb.com/images/media/drink/pwgtpa1504366376.jpg	Whiskey sour glass	Ordinary Drink
+30	Big Red	Alcoholic	Pour ingredients into 1 ounce shot glass	https://www.thecocktaildb.com/images/media/drink/yqwuwu1441248116.jpg	Shot glass	Shot
+31	Bellini	Alcoholic	Pour peach purée into chilled flute, add sparkling wine. Stir gently.	https://www.thecocktaildb.com/images/media/drink/eaag491504367543.jpg	Champagne Flute	Ordinary Drink
+32	Bramble	Alcoholic	Fill glass with crushed ice. Build gin, lemon juice and simple syrup over. Stir, and then pour blackberry liqueur over in a circular fashion to create marbling effect. Garnish with two blackberries and lemon slice.	https://www.thecocktaildb.com/images/media/drink/lvzl3r1504372526.jpg	Old-Fashioned glass	Ordinary Drink
+33	Balmoral	Alcoholic	In a mixing glass half-filled with ice cubes, combine all of the ingredients. Stir well. Strain into a cocktail glass.	https://www.thecocktaildb.com/images/media/drink/vysuyq1441206297.jpg	Cocktail glass	Ordinary Drink
+34	Bluebird	Alcoholic	In a mixing glass half-filled with crushed ice, combine the gin, triple sec, Curacao, and bitters. Stir well. Strain into a cocktail glass and garnish with the lemon twist and the cherry.	https://www.thecocktaildb.com/images/media/drink/5jhyd01582579843.jpg	Cocktail glass	Ordinary Drink
+35	Brooklyn	Alcoholic	Combine ingredients with ice and stir until well-chilled. Strain into a chilled cocktail glass.	https://www.thecocktaildb.com/images/media/drink/ojsezf1582477277.jpg	Cocktail glass	Cocktail
+36	Boomerang	Alcoholic	In a mixing glass half-filled with ice cubes, combine the gin, vermouth, bitters, and maraschino liqueur. Stir well. Strain into a cocktail glass and garnish with the cherry.	https://www.thecocktaildb.com/images/media/drink/3m6yz81504389551.jpg	Cocktail glass	Ordinary Drink
+37	Bora Bora	Non alcoholic	Prepare in a blender or shaker, serve in a highball glass on the rocks. Garnish with 1 slice of pineapple and one cherry.	https://www.thecocktaildb.com/images/media/drink/xwuqvw1473201811.jpg	Highball glass	Cocktail
+38	Barracuda	Alcoholic	Shake pour ingredients with ice. Strain into glass, top with Sparkling wine.	https://www.thecocktaildb.com/images/media/drink/jwmr1x1504372337.jpg	Margarita glass	Ordinary Drink
+39	Buccaneer	Alcoholic	Pour the corona into an 18oz beer glass pour the bacardi limon into the beer stir very gently	https://www.thecocktaildb.com/images/media/drink/upvtyt1441249023.jpg	Beer pilsner	Beer
+40	Brigadier	Alcoholic	Mix ingredients in a warmed mug and stir.	https://www.thecocktaildb.com/images/media/drink/nl89tf1518947401.jpg	Coupe Glass	Cocktail
+41	Broadside	Alcoholic	Half fill the glass with ice cubes. Crush the wormwood and add to ice. Pour rum, scotch and butters, then serve!	https://www.thecocktaildb.com/images/media/drink/l2o6xu1582476870.jpg	Highball glass	Cocktail
+42	Blackthorn	Alcoholic	Stir sloe gin and vermouth with ice and strain into a cocktail glass. Add the twist of lemon peel and serve.	https://www.thecocktaildb.com/images/media/drink/xvswvy1441209430.jpg	Cocktail glass	Ordinary Drink
+43	Bob Marley	Alcoholic	Layer in a 2 oz shot glass or pony glass	https://www.thecocktaildb.com/images/media/drink/rrqrst1477140664.jpg	Shot glass	Shot
+44	Bubble Gum	Alcoholic	Layer in order into a shot glass.	https://www.thecocktaildb.com/images/media/drink/spuurv1468878783.jpg	Shot glass	Shot
+45	Bible Belt	Alcoholic	Mix all ingredients, and pour over ice.	https://www.thecocktaildb.com/images/media/drink/6bec6v1503563675.jpg	Highball glass	Other/Unknown
+46	Brain Fart	Alcoholic	Mix all ingredients together. Slowly and gently. Works best if ice is added to punch bowl and soda's are very cold.	https://www.thecocktaildb.com/images/media/drink/rz5aun1504389701.jpg	Punch bowl	Punch / Party Drink
+47	Bloody Mary	Alcoholic	Stirring gently, pour all ingredients into highball glass. Garnish.	https://www.thecocktaildb.com/images/media/drink/t6caa21582485702.jpg	Old-fashioned glass	Ordinary Drink
+48	Blue Lagoon	Alcoholic	Pour vodka and curacao over ice in a highball glass. Fill with lemonade, top with the cherry, and serve.	https://www.thecocktaildb.com/images/media/drink/5wm4zo1582579154.jpg	Highball glass	Ordinary Drink
+49	Boston Sour	Alcoholic	Shake juice of lemon, powdered sugar, blended whiskey, and egg white with cracked ice and strain into a whiskey sour glass. Add the slice of lemon, top with the cherry, and serve.	https://www.thecocktaildb.com/images/media/drink/kxlgbi1504366100.jpg	Whiskey sour glass	Ordinary Drink
+50	Brandy Flip	Alcoholic	In a shaker half-filled with ice cubes, combine the brandy, egg, sugar, and cream. Shake well. Strain into a sour glass and garnish with the nutmeg.	https://www.thecocktaildb.com/images/media/drink/6ty09d1504366461.jpg	Whiskey sour glass	Ordinary Drink
+51	Casino	Alcoholic	Pour all ingredients into shaker with ice cubes. Shake well. Strain into chilled cocktail glass. Garnish with a lemon twist and a maraschino cherry. Serve without a straw.	https://www.thecocktaildb.com/images/media/drink/1mvjxg1504348579.jpg	Cocktail glass	Ordinary Drink
+52	Caipirinha	Alcoholic	Place lime and sugar into old fashioned glass and muddle (mash the two ingredients together using a muddler or a wooden spoon). Fill the glass with ice and add the Cachaça.	https://www.thecocktaildb.com/images/media/drink/jgvn7p1582484435.jpg	Old-fashioned glass	Ordinary Drink
+53	Cherry Rum	Alcoholic	Shake all ingredients with ice, strain into a cocktail glass, and serve.	https://www.thecocktaildb.com/images/media/drink/twsuvr1441554424.jpg	Cocktail glass	Ordinary Drink
+54	Cuba Libre	Alcoholic	Build all ingredients in a Collins glass filled with ice. Garnish with lime wedge.	https://www.thecocktaildb.com/images/media/drink/uuxsrr1473201663.jpg	Highball glass	Ordinary Drink
+55	Cuba Libra	Alcoholic	Fill tall glass with ice cubes. Add rum. Rub cut edge of lime on rim of glass then squeeze juice into glass. Fill with Coca-Cola. Garnish with lime slice. Enjoy!	https://www.thecocktaildb.com/images/media/drink/ck6d0p1504388696.jpg	Highball glass	Ordinary Drink
+56	Cafe Savoy	Alcoholic	Fill mug almost to top with coffee.Add milk, triple sec and brandy. Stir.	https://www.thecocktaildb.com/images/media/drink/vqwptt1441247711.jpg	Coffee mug	Coffee / Tea
+57	Cream Soda	Alcoholic	Pour 1oz of Spiced Rum into a highball glass with ice. Fill with Ginger Ale.	https://www.thecocktaildb.com/images/media/drink/yqstxr1479209367.jpg	Highball glass	Cocktail
+58	Corn n Oil	Alcoholic	Cut the half lime in half again. Add the lime, falernum, and bitters to a rocks glass. Muddle. Add the rum. (Aged Barbados rum such as Plantation 5 Year is recommended). Add ice and stir. Float the blackstrap rum on top. Serve with a straw.	https://www.thecocktaildb.com/images/media/drink/pk6dwi1592767243.jpg	Old-fashioned glass	Cocktail
+59	Casa Blanca	Alcoholic	Shake all ingredients with ice, strain into a cocktail glass, and serve.	https://www.thecocktaildb.com/images/media/drink/usspxq1441553762.jpg	Cocktail glass	Ordinary Drink
+60	Clover Club	Alcoholic	Dry shake ingredients to emulsify, add ice, shake and served straight up.	https://www.thecocktaildb.com/images/media/drink/t0aja61504348715.jpg	Cocktail glass	Ordinary Drink
+61	Citrus Coke	Alcoholic	Pour half of coke in a glass. Then add Bacardi and top it off with the remaining coke. Stir and drink up!	https://www.thecocktaildb.com/images/media/drink/uyrvut1479473214.jpg	Highball Glass	Soft Drink / Soda
+62	Chicago Fizz	Alcoholic	Shake all ingredients (except carbonated water) with ice and strain into a highball glass over two ice cubes. Fill with carbonated water, stir, and serve.	https://www.thecocktaildb.com/images/media/drink/qwvwqr1441207763.jpg	Highball glass	Ordinary Drink
+63	City Slicker	Alcoholic	In a shaker half-filled with ice cubes, combine all of the ingredients. Shake well. Strain into a cocktail glass.	https://www.thecocktaildb.com/images/media/drink/dazdlg1504366949.jpg	Cocktail glass	Ordinary Drink
+64	Coffee-Vodka	Alcoholic	Boil water and sugar until dissolved. Turn off heat. Slowly add dry instant coffee and continue stirring. Add a chopped vanilla bean to the vodka, then combine the cooled sugar syrup and coffee solution with the vodka. Cover tightly and shake vigorously each day for 3 weeks. Strain and filter. Its also best to let the sugar mixture cool completely so the vodka won't evaporate when its added. If you like a smoother feel to the liqueur you can add about 1 teaspoon of glycerine to the finished product.	https://www.thecocktaildb.com/images/media/drink/qvrrvu1472667494.jpg	Collins Glass	Homemade Liqueur
+65	Caipirissima	Alcoholic	Same as Caipirinha but instead of cachaca you add WHITE RUM. It's great!!!!!!!!	https://www.thecocktaildb.com/images/media/drink/yd47111503565515.jpg	Collins Glass	Ordinary Drink
+66	Campari Beer	Alcoholic	Use a 15 oz glass. Add Campari first. Fill with beer.	https://www.thecocktaildb.com/images/media/drink/xsqrup1441249130.jpg	Beer mug	Beer
+67	Cosmopolitan	Alcoholic	Add all ingredients into cocktail shaker filled with ice. Shake well and double strain into large cocktail glass. Garnish with lime wheel.	https://www.thecocktaildb.com/images/media/drink/kpsajh1504368362.jpg	Cocktail glass	Cocktail
+68	Casino Royale	Alcoholic	In a shaker half-filled with ice cubes, combine all of the ingredients. Shake well. Strain into a sour glass.	https://www.thecocktaildb.com/images/media/drink/3qpv121504366699.jpg	Whiskey sour glass	Ordinary Drink
+69	Clove Cocktail	Alcoholic	Stir all ingredients with ice, strain into a cocktail glass, and serve.	https://www.thecocktaildb.com/images/media/drink/qxvtst1461867579.jpg	Cocktail glass	Ordinary Drink
+70	Coffee Liqueur	Alcoholic	Combine coffee, sugar and water. Simmer 1 hour and let cool. Add vanilla and vodka. Age in sealed jar 2 to 3 weeks.	https://www.thecocktaildb.com/images/media/drink/ryvtsu1441253851.jpg	Collins Glass	Homemade Liqueur
+71	Chocolate Milk	Alcoholic	Put the milk in the bottom, pour the Liquer on top and add the dash of amaretto. Do not mix. SLAM IT!	https://www.thecocktaildb.com/images/media/drink/j6q35t1504889399.jpg	Shot Glass	Shot
+72	Coke and Drops	Non alcoholic	Take a glass, pour the Coke in the glass, then you take 7 drops of lemon juice. Granish with a lemon slice on the rim of the glass.	https://www.thecocktaildb.com/images/media/drink/yrtxxp1472719367.jpg	Cocktail glass	Soft Drink / Soda
+73	Chocolate Drink	Non alcoholic	Melt the bar in a small amount of boiling water. Add milk. Cook over low heat, whipping gently (with a whisk, i would assume) until heated well. Don't let it boil! Serve in coffee mug.	https://www.thecocktaildb.com/images/media/drink/q7w4xu1487603180.jpg	Coffee mug	Cocoa
+74	Creme de Menthe	Alcoholic	Bring sugar and water to a boil and simmer for 10 minutes. Cool. Add the remaining ingredients and stir. Cover and let ripen for 1 month.	https://www.thecocktaildb.com/images/media/drink/yxswtp1441253918.jpg	Collins Glass	Homemade Liqueur
+75	Cranberry Punch	Non alcoholic	Combine first four ingredients. Stir until sugar is dissolved, chill. Then add ginger ale just before serving. Add ice ring to keep punch cold.	https://www.thecocktaildb.com/images/media/drink/mzgaqu1504389248.jpg	Punch Bowl	Punch / Party Drink
+76	Derby	Alcoholic	Pour all ingredients into a mixing glass with ice. Stir. Strain into a cocktail glass. Garnish with a sprig of fresh mint in the drink.	https://www.thecocktaildb.com/images/media/drink/i502ra1504349156.jpg	Cocktail glass	Ordinary Drink
+77	Diesel	Alcoholic	Pour the lager first then add the blackcurrant cordial. Top up with the cider. The colour sholud be very dark approaching the colour of Guiness.	https://www.thecocktaildb.com/images/media/drink/sxrrqq1454512852.jpg	Pint glass	Beer
+78	Daiquiri	Alcoholic	Pour all ingredients into shaker with ice cubes. Shake well. Strain in chilled cocktail glass.	https://www.thecocktaildb.com/images/media/drink/mrz9091589574515.jpg	Cocktail glass	Ordinary Drink
+79	Danbooka	Alcoholic	pour it in and mix it.	https://www.thecocktaildb.com/images/media/drink/vurrxr1441246074.jpg	Coffee Mug	Coffee / Tea
+80	Dragonfly	Alcoholic	In a highball glass almost filled with ice cubes, combine the gin and ginger ale. Stir well. Garnish with the lime wedge.	https://www.thecocktaildb.com/images/media/drink/uc63bh1582483589.jpg	Highball glass	Ordinary Drink
+81	Downshift	Alcoholic	Start with the Sprite. Next comes the tequila. After that, add the Minute Maid Fruit Punch, then float the 151. Rocks optional.	https://www.thecocktaildb.com/images/media/drink/y36z8c1503563911.jpg	Hurricane glass	Punch / Party Drink
+82	Dry Rob Roy	Alcoholic	In a mixing glass half-filled with ice cubes, combine the Scotch and vermouth. Stir well. Strain into a cocktail glass. Garnish with the lemon twist.	https://www.thecocktaildb.com/images/media/drink/typuyq1439456976.jpg	Cocktail glass	Ordinary Drink
+83	Dry Martini	Alcoholic	Straight: Pour all ingredients into mixing glass with ice cubes. Stir well. Strain in chilled martini cocktail glass. Squeeze oil from lemon peel onto the drink, or garnish with olive.	https://www.thecocktaildb.com/images/media/drink/6ck9yi1589574317.jpg	Cocktail glass	Cocktail
+84	Dirty Nipple	Alcoholic	This is a layered shot - the Bailey's must be on top	https://www.thecocktaildb.com/images/media/drink/vtyqrt1461866508.jpg	Shot glass	Shot
+85	Dirty Martini	Alcoholic	Pour the vodka, dry vermouth and olive brine into a cocktail shaker with a handful of ice and shake well.\r\nRub the rim of a martini glass with the wedge of lemon.\r\nStrain the contents of the cocktail shaker into the glass and add the olive.\r\nA dirty Martini contains a splash of olive brine or olive juice and is typically garnished with an olive.	https://www.thecocktaildb.com/images/media/drink/vcyvpq1485083300.jpg	Cocktail glass	Cocktail
+86	Darkwood Sling	Alcoholic	There are many good cherry liqueurs you can use, but I prefere Heering. Add one share of the liqueur. Then you add one share of Soda. For a sour sling use Tonic (most people prefer the drink without Tonic). Afterwards you fill the glass with Orange Juice and ice cubes.	https://www.thecocktaildb.com/images/media/drink/sxxsyq1472719303.jpg	Cocktail glass	Soft Drink / Soda
+87	Dark Caipirinha	Alcoholic	Muddle the sugar into the lime wedges in an old-fashioned glass.\r\nFill the glass with ice cubes.\r\nPour the cachaca into the glass.\r\nStir well.	https://www.thecocktaildb.com/images/media/drink/uwstrx1472406058.jpg	Highball glass	Cocktail
+88	Duchamp's Punch	Alcoholic	Shake all ingredients.\r\nDouble strain in a chilled double old fashioned glass with abig ice cube.\r\nGarnish with a couple of lavender sprigs	https://www.thecocktaildb.com/images/media/drink/g51naw1485084685.jpg	Old-fashioned glass	Cocktail
+89	Dark and Stormy	Alcoholic	In a highball glass filled with ice add 6cl dark rum and top with ginger beer. Garnish with lime wedge.	https://www.thecocktaildb.com/images/media/drink/t1tn0s1504374905.jpg	Highball glass	Ordinary Drink
+90	Damned if you do	Alcoholic	Pour into shot glass. Put in mouth. Repeat as deemed necessary.	https://www.thecocktaildb.com/images/media/drink/ql7bmx1503565106.jpg	Shot glass	Shot
+91	Dubonnet Cocktail	Alcoholic	Stir all ingredients (except lemon peel) with ice and strain into a cocktail glass. Add the twist of lemon peel and serve.	https://www.thecocktaildb.com/images/media/drink/pfz3hz1582483111.jpg	Cocktail glass	Ordinary Drink
+92	Drinking Chocolate	Non alcoholic	Heat the cream and milk with the cinnamon and vanilla bean very slowly for 15-20 minutes. (If you don't have any beans add 1-2 tsp of vanilla after heating). Remove the bean and cinnamon. Add the chocolate. Mix until fully melted. Serve topped with some very dense fresh whipped cream. Serves 1-2 depending upon how much of a glutton you are. For a richer chocolate, use 4 oz of milk, 4 oz of cream, 4 oz of chocolate. Serve in coffee mug.	https://www.thecocktaildb.com/images/media/drink/u6jrdf1487603173.jpg	Coffee mug	Cocoa
+93	Death in the Afternoon	Alcoholic	Easy as you like, pour the absinthe into a chilled glass, top with champagne. Must be drunk mid afternoon for the optimum effect.	https://www.thecocktaildb.com/images/media/drink/y7s3rh1598719574.jpg	Margarita glass	Cocktail
+94	Egg Cream	Non alcoholic	Mix syrup and milk in a fountain glass. Add soda water, serve with a straw.	https://www.thecocktaildb.com/images/media/drink/mvis731484430445.jpg	Coffee mug	Other/Unknown
+95	Egg Nog #4	Optional alcohol	In a small mixer bowl beat egg yolks till blended. Gradually add 1/4 cup sugar, beating at high speed till thick and lemon colored. Stir in milk, stir in rum, bourbon, vanilla, and salt. Chill thoroughly. Whip cream. Wash beaters well. In a large mixer bowl beat egg whites till soft peaks form. Gradually add remaining 1/4 cup sugar, beating to stiff peaks. Fold yolk mixture and whipped cream into egg whites. Serve immediately. Sprinkle nutmeg over each serving. Serve in a punch bowl or another big bowl. NOTE: For a nonalcoholic eggnog, prepare Eggnog as above, except omit the bourbon and rum and increase the milk to 3 cups.	https://www.thecocktaildb.com/images/media/drink/wpspsy1468875747.jpg	Punch bowl	Punch / Party Drink
+96	English Highball	Alcoholic	Pour brandy, gin, and sweet vermouth into a highball glass over ice cubes. Fill with carbonated water. Add the twist of lemon peel, stir, and serve. (Ginger ale may be substituted for carbonated water, if preferred.)	https://www.thecocktaildb.com/images/media/drink/dhvr7d1504519752.jpg	Highball glass	Ordinary Drink
+97	Espresso Martini	Alcoholic	Pour ingredients into shaker filled with ice, shake vigorously, and strain into chilled martini glass	https://www.thecocktaildb.com/images/media/drink/n0sx531504372951.jpg	Cocktail glass	Cocktail
+98	Espresso Rumtini	Alcoholic	Mix together in a cocktail glass. Garnish with some choclate powder and coffee beans	https://www.thecocktaildb.com/images/media/drink/acvf171561574403.jpg	Cocktail glass	Cocktail
+99	Egg Nog - Healthy	Optional alcohol	Whip egg substitute and sugar together, combine with the two kinds of milk, vanilla, and rum. Mix well. Chill over night. Sprinkle with nutmeg. Makes 6 servings.	https://www.thecocktaildb.com/images/media/drink/qxuppv1468875308.jpg	Collins Glass	Punch / Party Drink
+100	English Rose Cocktail	Alcoholic	Rub rim of cocktail glass with lemon juice and dip rim of glass in powdered sugar. Shake all ingredients (except cherry) with ice and strain into sugar-rimmed glass. Top with the cherry and serve.	https://www.thecocktaildb.com/images/media/drink/yxwrpp1441208697.jpg	Cocktail glass	Ordinary Drink
+101	Egg-Nog - Classic Cooked	Optional alcohol	In large saucepan, beat together eggs, sugar and salt, if desired. Stir in 2 cups of the milk. Cook over low heat, stirring constantly, until mixture is thick enough to coat a metal spoon and reaches 160 degrees F. Remove from heat. Stir in remaining 2 cups milk and vanilla. Cover and regfigerate until thoroughly chilled, several hours or overnight. Just before serving, pour into bowl or pitcher. Garnish or add stir-ins, if desired. Choose 1 or several of: Chocolate curls, cinnamon sticks, extracts of flavorings, flavored brandy or liqueur, fruit juice or nectar, ground nutmeg, maraschino cherries, orange slices, peppermint sticks or candy canes, plain brandy, run or whiskey, sherbet or ice-cream, whipping cream, whipped. Serve immediately.	https://www.thecocktaildb.com/images/media/drink/quxsvt1468875505.jpg	Pitcher	Punch / Party Drink
+102	Empellón Cocina's Fat-Washed Mezcal	Alcoholic	To ensure that your pork fat is just as delicious as theirs, here’s their adobo marinade and what to do with it (you’ll also need a rack of ribs):\r\n\r\n4 ancho chiles, 8 guajillo chiles and 4 chipotle chiles, plus 4 cloves roasted garlic, half a cup of cider vinegar, a quarter teaspoon of Mexican oregano, 1 teaspoon of ground black pepper, a whole clove, a quarter teaspoon of ground cinnamon and a half teaspoon of ground cumin.\r\n\r\nToast the dried chiles and soak in water for at least an hour until they are rehydrated. Drain and discard the soaking liquid. Combine the soaked chiles with the remaining ingredients and purée until smooth.\r\n\r\nCold smoke a rack of baby back pork ribs by taking a large hotel pan with woodchips on one side and charcoal on the other. Place another, smaller, pan with pork ribs, above the charcoal/woodchip pan. Ignite the charcoal, being careful to not ignite the woodchips. Cover both pans with foil and allow to smoke for 10-15 minutes, until desired level of smoke is achieved, then coat with adobo marinade and wrap in tin foil prior to placing ribs in a 300 degree oven for 7 hours. When the ribs have cooled, strain off the fat and use for the infusion.\r\n\r\nIf you’re having a hard time coming up to the same kind of volume of fat, make up the balance with pork lard from a butcher. To get the same depth of flavor without the ribs, heat up the fat in a pot with a few spoons of the marinade.\r\n\r\nOnce you’ve got your tub of seasoned pork fat in cooled liquid form, pour equal amounts of Ilegal Joven mezcal and fat into a sealable container. Seal the container and give it a really good shake, then put it in the freezer overnight. When the whole thing is separated and congealed, pour it through a fine mesh chinoise. If you don’t have a chinoise, try a fine mesh strainer, or if you don’t have one of those, try spooning off most of the fat. There will be some beads of orange fat left in the strained mezcal: run that through a few layers of cheesecloth (or coffee filters in a pinch) to get rid of the last of it.\r\n\r\nThe mezcal is now ready for drinking, straight-up or in a cocktail. \r\n\r\nHabanero tincture\r\n\r\nSlice habaneros and add 2 ounces Ilegal Joven mezcal.\r\nAllow to sit overnight or until desired level of heat is achieved.\r\nCocktail\r\n\r\nCombine mezcal and chocolate liqueur in a mixing glass with ice and stir for 45 seconds.\r\nStrain into chilled coupe.\r\nCarefully "sink" the coffee liqueur down the inside of the coupe over a spoon.\r\nGarnish with 5 drops habanero tincture.	https://www.thecocktaildb.com/images/media/drink/osgvxt1513595509.jpg	Beer Glass	Cocktail
+103	Frappé	Non alcoholic	Mix together. Blend at highest blender speed for about 1 minute. Pour into a glass and drink with a straw. Notes: This works best if everything is cold (if you make fresh coffee, mix it with the milk and let it sit in the fridge for 1/2 hour. If it is not frothy, add more milk, or even just some more milk powder. The froth gradually turns to liquid at the bottom of the glass, so you will find that you can sit and drink this for about 1/2 hour, with more iced coffee continually appearing at the bottom. Very refreshing.	https://www.thecocktaildb.com/images/media/drink/vqwryq1441245927.jpg	Highball Glass	Coffee / Tea
+104	Foxy Lady	Alcoholic	Shake all ingredients with ice, strain into a chilled cocktail glass, and serve.	https://www.thecocktaildb.com/images/media/drink/r9cz3q1504519844.jpg	Cocktail glass	Ordinary Drink
+105	French 75	Alcoholic	Combine gin, sugar, and lemon juice in a cocktail shaker filled with ice. Shake vigorously and strain into a chilled champagne glass. Top up with Champagne. Stir gently.	https://www.thecocktaildb.com/images/media/drink/4qnyty1504368615.jpg	Collins glass	Ordinary Drink
+106	Frisco Sour	Alcoholic	Shake all ingredients (except slices of lemon and lime) with ice and strain into a whiskey sour glass. Decorate with the slices of lemon and lime and serve.	https://www.thecocktaildb.com/images/media/drink/acuvjz1582482022.jpg	Whiskey sour glass	Ordinary Drink
+107	Fruit Shake	Non alcoholic	Blend til smooth.	https://www.thecocktaildb.com/images/media/drink/q0fg2m1484430704.jpg	Highball Glass	Other/Unknown
+108	Fruit Cooler	Non alcoholic	Toss strawberries with sugar, and let sit overnight in refrigerator. Cut lemon, reserve two slices. Juice the rest. Mix together the lemon juice, strawberries, apple juice, and soda water. Add slices of lemon (decor, really). In glasses, put ice cubes, and a slice of apple. Pour drink in, and serve.	https://www.thecocktaildb.com/images/media/drink/i3tfn31484430499.jpg	Highball Glass	Other/Unknown
+109	Freddy Kruger	Alcoholic	make it an ample size shot!!	https://www.thecocktaildb.com/images/media/drink/tuppuq1461866798.jpg	Shot glass	Shot
+110	Fuzzy Asshole	Alcoholic	fill coffe mug half full of coffee. Fill the other half full of Peach Schnapps. Stir and drink while hot.	https://www.thecocktaildb.com/images/media/drink/wrvpuu1472667898.jpg	Coffee mug	Coffee / Tea
+111	Funk and Soul	Alcoholic	Mix all ingredients together and strain into a Collins glass. Use Jamaican rum where possible for a more authentic taste.	https://www.thecocktaildb.com/images/media/drink/qtv83q1596015790.jpg	Collins glass	Cocktail
+112	French Martini	Alcoholic	Pour all ingredients into shaker with ice cubes. Shake well and strain into a chilled cocktail glass. Squeeze oil from lemon peel onto the drink.	https://www.thecocktaildb.com/images/media/drink/clth721504373134.jpg	Cocktail glass	Cocktail
+113	French Negroni	Alcoholic	Add ice to a shaker and pour in all ingredients.\nUsing a bar spoon, stir 40 to 45 revolutions or until thoroughly chilled.\nStrain into a martini glass or over ice into a rocks glass. Garnish with orange twist.	https://www.thecocktaildb.com/images/media/drink/x8lhp41513703167.jpg	Martini Glass	Cocktail
+114	Flying Dutchman	Alcoholic	In an old-fashioned glass almost filled with ice cubes, combine the gin and triple sec. Stir well.	https://www.thecocktaildb.com/images/media/drink/mwko4q1582482903.jpg	Old-fashioned glass	Ordinary Drink
+115	Frozen Daiquiri	Alcoholic	Combine all ingredients (except for the cherry) in an electric blender and blend at a low speed for five seconds, then blend at a high speed until firm. Pour contents into a champagne flute, top with the cherry, and serve.	https://www.thecocktaildb.com/images/media/drink/7oyrj91504884412.jpg	Champagne flute	Ordinary Drink
+116	Fruit Flip-Flop	Non alcoholic	Place all ingredients in the blender jar - cover and whiz on medium speed until well blended. Pour in one tall, 2 medium or 3 small glasses and drink up.	https://www.thecocktaildb.com/images/media/drink/nfdx6p1484430633.jpg	Highball Glass	Other/Unknown
+117	Fahrenheit 5000	Alcoholic	Cover bottom of shot glass with Tabasco Sauce and then fill with half Firewater and half Absolut Peppar.	https://www.thecocktaildb.com/images/media/drink/tysssx1473344692.jpg	Shot glass	Shot
+118	Flying Scotchman	Alcoholic	Shake all ingredients with ice, strain into a cocktail glass, and serve.	https://www.thecocktaildb.com/images/media/drink/q53l911582482518.jpg	Cocktail glass	Ordinary Drink
+119	French Connection	Alcoholic	Pour all ingredients directly into old fashioned glass filled with ice cubes. Stir gently.	https://www.thecocktaildb.com/images/media/drink/zaqa381504368758.jpg	Old-fashioned glass	Ordinary Drink
+120	Flaming Dr. Pepper	Alcoholic	Add Amaretto, Bacardi, and vodka. Mix in the Dr. Pepper and beer	https://www.thecocktaildb.com/images/media/drink/d30z931503565384.jpg	Collins Glass	Shot
+121	Flander's Flake-Out	Alcoholic	Bang 'em both in.	https://www.thecocktaildb.com/images/media/drink/sqvqrx1461866705.jpg	Collins Glass	Ordinary Drink
+122	Flaming Lamborghini	Alcoholic	Pour the Sambuca and Kahlua into the Cocktail Glass and give the drinker a straw. Pour the Baileys and Blue Curacao into two sepsrate shot glasses either side of the cocktail glass. Set light the concotion in the cocktail glass and start to drink through the straw (this drink should be drunk in one) , as the bottom of the glass is reached put out the fire by pouring the Baileys and Blue Curacao into the cocktail glass and keep drinking till it's all gone!!	https://www.thecocktaildb.com/images/media/drink/yywpss1461866587.jpg	Cocktail glass	Cocktail
+123	Frozen Mint Daiquiri	Alcoholic	Combine all ingredients with 1 cup of crushed ice in an electric blender. Blend at a low speed for a short length of time. Pour into an old-fashioned glass and serve.	https://www.thecocktaildb.com/images/media/drink/jrhn1q1504884469.jpg	Old-fashioned glass	Ordinary Drink
+124	Frozen Pineapple Daiquiri	Alcoholic	Combine all ingredients with 1 cup of crushed ice in an electric blender. Blend at a low speed for a short length of time. Pour into a cocktail glass and serve.	https://www.thecocktaildb.com/images/media/drink/k3aecd1582481679.jpg	Cocktail Glass	Ordinary Drink
+125	GG	Optional alcohol	Pour the Galliano liqueur over ice. Fill the remainder of the glass with ginger ale and thats all there is to it. You now have a your very own GG.	https://www.thecocktaildb.com/images/media/drink/vyxwut1468875960.jpg	Collins Glass	Ordinary Drink
+126	Gimlet	Alcoholic	Add all the ingredients to a shaker and fill with ice.\r\n\r\nShake, and strain into a chilled cocktail glass or an Old Fashioned glass filled with fresh ice.\r\n\r\nGarnish with a lime wheel.	https://www.thecocktaildb.com/images/media/drink/3xgldt1513707271.jpg	Martini Glass	Cocktail
+127	Gin Fizz	Alcoholic	Shake all ingredients with ice cubes, except soda water. Pour into glass. Top with soda water.	https://www.thecocktaildb.com/images/media/drink/xhl8q31504351772.jpg	Highball glass	Ordinary Drink
+128	Gin Sour	Alcoholic	In a shaker half-filled with ice cubes, combine the gin, lemon juice, and sugar. Shake well. Strain into a sour glass and garnish with the orange slice and the cherry.	https://www.thecocktaildb.com/images/media/drink/mt7l7m1504883523.jpg	Whiskey sour glass	Ordinary Drink
+129	Godchild	Alcoholic	Shake all ingredients well with cracked ice, strain into a champagne flute, and serve.	https://www.thecocktaildb.com/images/media/drink/m5nhtr1504820829.jpg	Champagne flute	Ordinary Drink
+130	Gin Daisy	Alcoholic	In a shaker half-filled with ice cubes, combine the gin, lemon juice, sugar, and grenadine. Shake well. Pour into an old-fashioned glass and garnish with the cherry and the orange slice.	https://www.thecocktaildb.com/images/media/drink/z6e22f1582581155.jpg	Old-fashioned glass	Ordinary Drink
+131	Gin Sling	Alcoholic	Dissolve powdered sugar in mixture of water and juice of lemon. Add gin. Pour into an old-fashioned glass over ice cubes and stir. Add the twist of orange peel and serve.	https://www.thecocktaildb.com/images/media/drink/8cl9sm1582581761.jpg	Old-fashioned glass	Ordinary Drink
+132	Gin Smash	Alcoholic	Muddle sugar with carbonated water and mint sprigs in an old-fashioned glass. Add gin and 1 ice cube. Stir, add the orange slice and the cherry, and serve.	https://www.thecocktaildb.com/images/media/drink/hp41fi1504883656.jpg	Old-fashioned glass	Ordinary Drink
+133	Gin Toddy	Alcoholic	Mix powdered sugar and water in an old-fashioned glass. Add gin and one ice cube. Stir, add the twist of lemon peel, and serve.	https://www.thecocktaildb.com/images/media/drink/jxstwf1582582101.jpg	Old-fashioned glass	Ordinary Drink
+134	Godfather	Alcoholic	Pour all ingredients directly into old fashioned glass filled with ice cubes. Stir gently.	https://www.thecocktaildb.com/images/media/drink/e5zgao1582582378.jpg	Old-fashioned glass	Ordinary Drink
+135	Godmother	Alcoholic	Pour vodka and amaretto into an old-fashioned glass over ice and serve.	https://www.thecocktaildb.com/images/media/drink/quksqg1582582597.jpg	Old-fashioned glass	Ordinary Drink
+136	Gagliardo	Alcoholic	Shake well and serve in a cocktail glass. This is a home cocktail of American/Internet Bar del Pozzo, Pavia, Italy.	https://www.thecocktaildb.com/images/media/drink/lyloe91487602877.jpg	Cocktail glass	Cocktail
+137	Gluehwein	Optional alcohol	Boil sugar and spices in water, leave in the water for 30 minutes. Strain the spiced water and mix with the wine. Heat slowly until short of boiling temperature. (To remove alcohol, let it boil for a while.) You may add lemon or orange juice to taste. Serve in irish coffee cup.	https://www.thecocktaildb.com/images/media/drink/vuxwvt1468875418.jpg	Irish coffee cup	Punch / Party Drink
+138	Greyhound	Alcoholic	Add the vodka to a Collins glass filled with ice.\nTop with grapefruit juice and stir.\n\n	https://www.thecocktaildb.com/images/media/drink/g5upn41513706732.jpg	Collins glass	Cocktail
+139	Gin Cooler	Alcoholic	Stir powdered sugar and 2 oz. carbonated water in a collins glass. Fill glass with ice and add gin. Fill with carbonated water and stir. Add the lemon peel and the orange spiral so that the end of the orange spiral dangles over rim of glass.	https://www.thecocktaildb.com/images/media/drink/678xt11582481163.jpg	Collins glass	Ordinary Drink
+140	Gin Squirt	Alcoholic	Stir gin, grenadine, and powdered sugar with ice and strain into a highball glass over ice cubes. Fill with carbonated water and stir. Decorate with the pineapple chunks and the strawberries and serve.	https://www.thecocktaildb.com/images/media/drink/xrbhz61504883702.jpg	Highball glass	Ordinary Drink
+141	Grand Blue	Alcoholic	Serve in an old fashioned glass.	https://www.thecocktaildb.com/images/media/drink/vsrsqu1472761749.jpg	Old-fashioned glass	Ordinary Drink
+142	Gin Rickey	Alcoholic	Half-fill a tall glass with ice. Mix the gin and Grenadine together and pour over the ice. Add the lime or lemon juice and top off with soda water. Decorate the glass with lime and/or lemon slices.	https://www.thecocktaildb.com/images/media/drink/s00d6f1504883945.jpg	Highball glass	Cocktail
+143	Gin Swizzle	Alcoholic	In a shaker half-filled with ice cubes, combine the lime juice, sugar, gin, and bitters. Shake well. Almost fill a colling glass with ice cubes. Stir until the glass is frosted. Strain the mixture in the shaker into the glass and add the club soda.	https://www.thecocktaildb.com/images/media/drink/sybce31504884026.jpg	Highball glass	Ordinary Drink
+144	Grass Skirt	Alcoholic	In a shaker half-filled with ice cubes, combine the gin, triple sec, pineapple juice, and grenadine. Shake well. Pour into an old-fashioned glass and garnish with the pineapple slice.	https://www.thecocktaildb.com/images/media/drink/qyvprp1473891585.jpg	Old-fashioned glass	Ordinary Drink
+145	Grim Reaper	Alcoholic	Mix Kahlua and 151 in glass. Quickly add ice and pour grenadine over ice to give ice red tint.	https://www.thecocktaildb.com/images/media/drink/kztu161504883192.jpg	Old-fashioned glass	Ordinary Drink
+146	Grasshopper	Alcoholic	Pour ingredients into a cocktail shaker with ice. Shake briskly and then strain into a chilled cocktail glass.	https://www.thecocktaildb.com/images/media/drink/aqm9el1504369613.jpg	Cocktail glass	Ordinary Drink
+147	Grizzly Bear	Alcoholic	Served over ice. Sounds nasty, but tastes great.	https://www.thecocktaildb.com/images/media/drink/k6v97f1487602550.jpg	Collins Glass	Ordinary Drink
+148	Green Goblin	Alcoholic	Cider First, Lager then Curacao	https://www.thecocktaildb.com/images/media/drink/qxprxr1454511520.jpg	Pint glass	Beer
+149	Golden dream	Alcoholic	Shake with cracked ice. Strain into glass and serve.	https://www.thecocktaildb.com/images/media/drink/qrot6j1504369425.jpg	Cocktail glass	Ordinary Drink
+150	H.D.	Alcoholic	Mix the whisky and Baileys Cream in a beer-glass (at least 50 cl). Fill the rest of the glass with coffee.	https://www.thecocktaildb.com/images/media/drink/upusyu1472667977.jpg	Beer mug	Coffee / Tea
+151	Honey Bee	Alcoholic	Shake ingredients with crushed ice\r\n	https://www.thecocktaildb.com/images/media/drink/vu8l7t1582475673.jpg	Margarita glass	Cocktail
+152	Herbal flame	Alcoholic	Pour Hot Damn 100 in bottom of a jar or regular glass. Fill the rest of the glass with sweet tea. Stir with spoon, straw, or better yet a cinnamon stick and leave it in.	https://www.thecocktaildb.com/images/media/drink/rrstxv1441246184.jpg	Mason jar	Coffee / Tea
+153	Horse's Neck	Alcoholic	Pour brandy and ginger ale directly into highball glass with ice cubes. Stir gently. Garnish with lemon zest. If desired, add dashes of Angostura Bitter.	https://www.thecocktaildb.com/images/media/drink/006k4e1504370092.jpg	Highball glass	Ordinary Drink
+154	Happy Skipper	Alcoholic	Pour Captain Morgan's Spiced Rum over ice, fill glass to top with Ginger Ale. Garnish with lime. Tastes like a cream soda. Named for the Gilligan's Island reference ("The Captain" *in* "Ginger" is a Happy Skipper!)	https://www.thecocktaildb.com/images/media/drink/42w2g41487602448.jpg	Highball glass	Ordinary Drink
+155	Hunter's Moon	Alcoholic	Put the Bombay Sapphire, Martini Bianco, sugar syrup & blackberries in a cocktail shaker with lots of ice and shake vigorously before pouring into a balloon glass, topping up with lemonade and garnishing with a wedge of orange.	https://www.thecocktaildb.com/images/media/drink/t0iugg1509556712.jpg	Balloon Glass	Cocktail
+156	Havana Cocktail	Alcoholic	In a shaker half-filled with ice cubes, combine all of the ingredients. Shake well. Strain into a cocktail glass.	https://www.thecocktaildb.com/images/media/drink/59splc1504882899.jpg	Cocktail glass	Ordinary Drink
+184	Japanese Fizz	Alcoholic	Shake all ingredients (except carbonated water) with ice and strain into a highball glass over two ice cubes. Fill with carbonated water, stir, and serve.	https://www.thecocktaildb.com/images/media/drink/37vzv11504884831.jpg	Highball glass	Ordinary Drink
+157	Holloween Punch	Non alcoholic	Take a bunch of grape juice and a bunch of fizzy stuff (club soda, ginger ale, lemonlime, whatever). Mix them in a punch bowl. Take orange sherbet and lime sherbet. Scoop out scoops and float them in the punch, let them melt a little so that a nasty film spreads all over the top of the punch but there are still "bubbles" in it in the form of sherbet scoops. Looks horrible, tastes just fine.	https://www.thecocktaildb.com/images/media/drink/lfeoe41504888925.jpg	Punch bowl	Punch / Party Drink
+158	Hot Creamy Bush	Alcoholic	Combine all ingredients in glass	https://www.thecocktaildb.com/images/media/drink/spvrtp1472668037.jpg	Irish coffee cup	Coffee / Tea
+159	Homemade Kahlua	Alcoholic	Dissolve sugar in 2 cups of boiling water and add corn syrup. Dissolve the instant coffee in the remaining water. Pour syrup and coffee in a gallon jug. Let it cool. Add vodka and vanilla when cold. For the best result, let the mixture "mature" for 4-5 weeks.	https://www.thecocktaildb.com/images/media/drink/uwtsst1441254025.jpg	Collins Glass	Homemade Liqueur
+160	Halloween Punch	Alcoholic	Tip the cherry juice, orange peel, chilli, cinnamon sticks, cloves and ginger into a large saucepan. Simmer for 5 mins, then turn off the heat. Leave to cool, then chill for at least 4 hrs, or up to 2 days – the longer you leave it the more intense the flavours. If serving to young children, take the chilli out after a few hours.\r\n\r\nWhen you’re ready to serve, pour the juice into a jug. Serve in glass bottles or glasses and pop a straw in each. If you're adding vodka, do so at this stage. Dangle a fangs sweet from each glass.	https://www.thecocktaildb.com/images/media/drink/7hcgyj1571687671.jpg	Punch bowl	Punch / Party Drink
+161	Harvey Wallbanger	Alcoholic	Stir the vodka and orange juice with ice in the glass, then float the Galliano on top. Garnish and serve.	https://www.thecocktaildb.com/images/media/drink/vg4bva1504369725.jpg	Collins glass	Ordinary Drink
+162	Hawaiian Cocktail	Alcoholic	Shake all ingredients with ice, strain into a cocktail glass, and serve.	https://www.thecocktaildb.com/images/media/drink/ujoh9x1504882987.jpg	Cocktail glass	Ordinary Drink
+163	Hemingway Special	Alcoholic	Pour all ingredients into a shaker with ice. Shake.	https://www.thecocktaildb.com/images/media/drink/jfcvps1504369888.jpg	Cocktail glass	Ordinary Drink
+164	Highland Fling Cocktail	Alcoholic	Stir all ingredients (except olive) with ice and strain into a cocktail glass. Add the olive and serve.	https://www.thecocktaildb.com/images/media/drink/0bkwca1492975553.jpg	Cocktail glass	Ordinary Drink
+165	Hot Chocolate to Die for	Non alcoholic	Melt the chocolate, butter and vanilla in a double boiler. When just smooth stir in the cream.	https://www.thecocktaildb.com/images/media/drink/0lrmjp1487603166.jpg	Coffee mug	Cocoa
+166	Ipamena	Non Alcoholic	Cut half a lime into pieces, place in a shaker, add the sugar and crush. Measure the passion fruit juice, add it to the shaker and fill up with ice cubes. Close the shaker and shake vigorously. Pour the liquid into a glass, top up with ginger ale, stir with a teaspoon and then garnish the rim of the glass with a slice of lime	https://www.thecocktaildb.com/images/media/drink/yswuwp1469090992.jpg	Wine Glass	Ordinary Drink
+167	Iced Coffee	Non alcoholic	Mix together until coffee and sugar is dissolved. Add milk. Shake well. Using a blender or milk shake maker produces a very foamy drink. Serve in coffee mug.	https://www.thecocktaildb.com/images/media/drink/ytprxy1454513855.jpg	Coffee mug	Coffee / Tea
+168	Irish Cream	Alcoholic	Mix scotch and milk. Add half-and-half. Add rest.	https://www.thecocktaildb.com/images/media/drink/90etyl1504884699.jpg	Irish coffee cup	Homemade Liqueur
+169	Ice Pick #1	Alcoholic	Put Vodka in glass fill with iced tea. Stir in lemon to taste.	https://www.thecocktaildb.com/images/media/drink/ypsrqp1469091726.jpg	Collins Glass	Ordinary Drink
+170	Irish Spring	Alcoholic	Pour all ingredients (except orange slice and cherry) into a collins glass over ice cubes. Garnish with the slice of orange, add the cherry on top, and serve.	https://www.thecocktaildb.com/images/media/drink/sot8v41504884783.jpg	Collins glass	Ordinary Drink
+171	Irish Coffee	Alcoholic	Heat the coffee, whiskey and sugar; do not boil. Pour into glass and top with cream; serve hot.	https://www.thecocktaildb.com/images/media/drink/sywsqw1439906999.jpg	Irish coffee cup	Coffee / Tea
+172	Imperial Fizz	Alcoholic	Shake all ingredients (except carbonated water) with ice and strain into a highball glass over two ice cubes. Fill with carbonated water, stir, and serve.	https://www.thecocktaildb.com/images/media/drink/zj1usl1504884548.jpg	Highball glass	Ordinary Drink
+173	Irish Russian	Alcoholic	Add the ingredients in the order listed in the recipe. Care must be taken when adding the Guinness to prevent an excess of foam. Do Not add ice.	https://www.thecocktaildb.com/images/media/drink/swqurw1454512730.jpg	Highball glass	Beer
+174	Imperial Cocktail	Alcoholic	Shake with ice and strain into cocktail glass.	https://www.thecocktaildb.com/images/media/drink/bcsj2e1487603625.jpg	Cocktail glass	Cocktail
+175	Iced Coffee Fillip	Alcoholic	Mix together in a coffee mug and chill before serving.	https://www.thecocktaildb.com/images/media/drink/sxtxrp1454514223.jpg	Coffee mug	Coffee / Tea
+176	Irish Curdling Cow	Alcoholic	Pour Irish Cream, Vodka, and Bourbon in a glass. Add some ice and mix in the orange juice.	https://www.thecocktaildb.com/images/media/drink/yrhutv1503563730.jpg	Highball glass	Cocktail
+177	Jitterbug	Alcoholic	Wet glass, dip rim in sugar. Then add Ice. Then add everything else. It's that simple!	https://www.thecocktaildb.com/images/media/drink/wwqvrq1441245318.jpg	Cocktail Glass	Cocktail
+178	Jam Donut	Alcoholic	Coat the rim of a shot glass with sugar using sugar syrup to stick. Add the Chambord raspberry liqueur to the shot glass, and carefully layer the Baileys Irish Cream on top. Serve.	https://www.thecocktaildb.com/images/media/drink/uuytrp1474039804.jpg	Shot glass	Shot
+179	Jelly Bean	Alcoholic	mix equal parts in pony glass-tastes just like a jelly bean!	https://www.thecocktaildb.com/images/media/drink/bglc6y1504388797.jpg	Cordial glass	Shot
+180	Jackhammer	Alcoholic	Serve over ice- Warning,Deadly!	https://www.thecocktaildb.com/images/media/drink/9von5j1504388896.jpg	Collins Glass	Ordinary Drink
+181	Jello shots	Alcoholic	Boil 3 cups of water then add jello. Mix jello and water until jello is completely disolved. Add the two cups of vodka and mix together. Pour mixture into plastic shot glasses and chill until firm. Then, eat away...	https://www.thecocktaildb.com/images/media/drink/l0smzo1504884904.jpg	Shot glass	Shot
+182	John Collins	Alcoholic	Pour all ingredients directly into highball glass filled with ice. Stir gently. Garnish. Add a dash of Angostura bitters.	https://www.thecocktaildb.com/images/media/drink/u5yaxl1504350270.jpg	Collins glass	Ordinary Drink
+183	Jamaica Kiss	Alcoholic	Fill a tumbler with ice cubes. Add a shot of Tia Maria and a shot of Jamaican light rum. Fill the tumbler with milk. Blend until smooth and serve immediately.	https://www.thecocktaildb.com/images/media/drink/urpvvv1441249549.jpg	Hurricane glass	Milk / Float / Shake
+185	Just a Moonmint	Non alcoholic	Place all ingredients in the blender jar - cover and whiz on medium speed until well blended. Pour in one tall, 2 medium or 3 small glasses and drink up.	https://www.thecocktaildb.com/images/media/drink/znald61487604035.jpg	Highball Glass	Milk / Float / Shake
+186	Jamaican Coffee	Alcoholic	Stir the rum, coffee and water together. Top with the whipped cream. Sprinkle with a pinch of well ground coffee and drink with a straw.	https://www.thecocktaildb.com/images/media/drink/xqptps1441247257.jpg	Champagne flute	Coffee / Tea
+187	Jewel Of The Nile	Alcoholic	In a mixing glass half-filled with ice cubes, combine all of the ingredients. Stir well. Strain into a cocktail glass.	https://www.thecocktaildb.com/images/media/drink/hx4nrb1504884947.jpg	Cocktail glass	Ordinary Drink
+188	Jack Rose Cocktail	Alcoholic	Shake all ingredients with ice, strain into a cocktail glass, and serve.	https://www.thecocktaildb.com/images/media/drink/uuqqrv1439907068.jpg	Cocktail glass	Ordinary Drink
+189	Jack's Vanilla Coke	Alcoholic	After pouring in your ingredients, and adding 3-5 ice cubes, according to taste. Stir the drink with a stirrer to get the Vanilla off the bottom.	https://www.thecocktaildb.com/images/media/drink/kjnt7z1504793319.jpg	Old-fashioned glass	Other/Unknown
+190	Kir	Alcoholic	Add the crème de cassis to the bottom of the glass, then top up with wine.	https://www.thecocktaildb.com/images/media/drink/apneom1504370294.jpg	Wine Glass	Ordinary Drink
+191	Karsk	Alcoholic	Put a copper coin in a coffe-cup and fill up with coffee until you no longer see the coin, then add alcohol until you see the coin. Norwegian speciality.	https://www.thecocktaildb.com/images/media/drink/808mxk1487602471.jpg	Highball glass	Ordinary Drink
+192	Kamikaze	Alcoholic	Shake all ingredients together with ice. Strain into glass, garnish and serve.	https://www.thecocktaildb.com/images/media/drink/xa58bb1504373204.jpg	Cocktail glass	Ordinary Drink
+193	Kir Royale	Alcoholic	Pour Creme de cassis in glass, gently pour champagne on top	https://www.thecocktaildb.com/images/media/drink/yt9i7n1504370388.jpg	Champagne Flute	Ordinary Drink
+194	Kurant Tea	Alcoholic	Pour Absolut Kurant into a comfortably big tea-cup. Add the not too hot(!) apple tea and, if you like, some sugar. Enjoy!	https://www.thecocktaildb.com/images/media/drink/xrsrpr1441247464.jpg	Champagne flute	Coffee / Tea
+195	Kiwi Lemon	Alcoholic	Mix in highball glass. Stirr. Garnish with slice of kiwi.	https://www.thecocktaildb.com/images/media/drink/tpupvr1478251697.jpg	Highball glass	Ordinary Drink
+196	Kioki Coffee	Alcoholic	Stir. Add whipped cream to the top.	https://www.thecocktaildb.com/images/media/drink/uppqty1441247374.jpg	Coffee mug	Coffee / Tea
+197	Kool-Aid Shot	Alcoholic	Pour into a large glass with ice and stir. Add a little cranberry juice to taste.	https://www.thecocktaildb.com/images/media/drink/fegm621503564966.jpg	Old-fashioned glass	Shot
+198	Kiss me Quick	Alcoholic	mix in the glass	https://www.thecocktaildb.com/images/media/drink/m7iaxu1504885119.jpg	Highball glass	Ordinary Drink
+199	Kool First Aid	Alcoholic	Add Kool Aid to a double shot glass, and top with rum. Slam and shoot.	https://www.thecocktaildb.com/images/media/drink/hfp6sv1503564824.jpg	Shot glass	Shot
+200	Kentucky B And B	Alcoholic	Pour the bourbon and Benedictine into a brandy snifter.	https://www.thecocktaildb.com/images/media/drink/sqxsxp1478820236.jpg	Brandy snifter	Ordinary Drink
+201	Kentucky Colonel	Alcoholic	In a shaker half-filled with ice cubes combine the courbon and Benedictine. Shake and strain into a cocktail glass. Garnish with the lemon twist.	https://www.thecocktaildb.com/images/media/drink/utqwpu1478820348.jpg	Cocktail glass	Ordinary Drink
+202	Kool-Aid Slammer	Alcoholic	Fill half the shot glass with the kool-aid first. Then put a paper towel over the top of the glass and slowly pour in the vodka. If you do it right, you should be able to see that the two liquids are separated, with the vodka on top. Now slam it! The last thing you'll taste is the kool-aid.	https://www.thecocktaildb.com/images/media/drink/kugu2m1504735473.jpg	Shot glass	Shot
+203	Kiwi Papaya Smoothie	Non alcoholic	Throw everything into a blender and liquify.	https://www.thecocktaildb.com/images/media/drink/jogv4w1487603571.jpg	Highball Glass	Other/Unknown
+204	Kill the cold Smoothie	Non alcoholic	Juice ginger and lemon and add it to hot water. You may add cardomom.	https://www.thecocktaildb.com/images/media/drink/7j1z2e1487603414.jpg	Highball glass	Other/Unknown
+205	Limeade	Non alcoholic	In a large glass, put the lime juice and sugar, and stir well. Add cold seltzer water to fill. Put the lime peels in the glass. Drink. Repeat until limes or soda run out.	https://www.thecocktaildb.com/images/media/drink/5jdp5r1487603680.jpg	Highball glass	Other/Unknown
+206	Lunch Box	Alcoholic	Fill a pint glass almost full with beer. Then fill the rest with orange juice (careful not to fill it to the top). Then take the shot of Amaretto and drop it in.	https://www.thecocktaildb.com/images/media/drink/qywpvt1454512546.jpg	Pint glass	Beer
+207	Lemon Shot	Alcoholic	Mix Galliano and Absolut Citron in a shot glass, lay lemon wedge sprinkled with sugar over glass and pour a rum over wedge and glass. light rum with a lighter and let burn for a second. Do shot quickly and suck on lemon. If it is done correctly, this will taste like a shot of sweet lemonade.	https://www.thecocktaildb.com/images/media/drink/mx31hv1487602979.jpg	Shot glass	Shot
+208	Long vodka	Alcoholic	Shake a tall glass with ice cubes and Angostura, coating the inside of the glass. Por the vodka onto this, add 1 slice of lime and squeeze juice out of remainder, mix with tonic, stir and voila you have a Long Vodka	https://www.thecocktaildb.com/images/media/drink/9179i01503565212.jpg	Highball glass	Ordinary Drink
+209	Lemon Drop	Alcoholic	Shake and strain into a chilled cocktail glass rimmed with sugar.	https://www.thecocktaildb.com/images/media/drink/mtpxgk1504373297.jpg	Cocktail glass	Cocktail
+210	Loch Lomond	Alcoholic	In a mixing glass half-filled with ice cubes, combine the Scotch, Drambuie, and vermouth. Stir well. Strain into a cocktail glass. Garnish with the lemon twist.	https://www.thecocktaildb.com/images/media/drink/rpvtpr1468923881.jpg	Cocktail glass	Ordinary Drink
+211	London Town	Alcoholic	In a mixing glass half-filled with ice cubes, combine all of the ingredients. Stir well. Strain into a cocktail glass.	https://www.thecocktaildb.com/images/media/drink/rpsrqv1468923507.jpg	Cocktail glass	Ordinary Drink
+212	Lassi Khara	Non alcoholic	Blend (frappe) in blender until frothy. Add torn curry leaves and serve cold.	https://www.thecocktaildb.com/images/media/drink/m1suzm1487603970.jpg	Highball Glass	Other/Unknown
+237	Mint Julep	Alcoholic	In a highball glass gently muddle the mint, sugar and water. Fill the glass with cracked ice, add Bourbon and stir well until the glass is well frosted. Garnish with a mint sprig.	https://www.thecocktaildb.com/images/media/drink/squyyq1439907312.jpg	Collins glass	Ordinary Drink
+213	Lassi Raita	Non alcoholic	Blend the yoghurt and ice cubes together, until the yoghurt becomes more liquid. Add sugar to taste. The lemon/lime is optional but it gives it a slightly tart taste. Dash of salt. Raita is also good for the summer. Instead of having a traditional salad you can make raita instead.	https://www.thecocktaildb.com/images/media/drink/s4x0qj1487603933.jpg	Highball Glass	Other/Unknown
+214	Lemouroudji	Non alcoholic	Juice the lemons. Peel and grate the ginger. Place the grated ginger and a liberal dash of the cayenne pepper into a piece of cheesecloth, and tie it into a knot. Let soak in the water. After 15 minutes or so, add the sugar, and the lemon juice. Chill, and serve.	https://www.thecocktaildb.com/images/media/drink/eirmo71487603745.jpg	Highball Glass	Other/Unknown
+215	Lord And Lady	Alcoholic	Pour the rum and Tia Maria into an old-fashioned glass almost filled with ice cubes. Stir well.	https://www.thecocktaildb.com/images/media/drink/quwrys1468923219.jpg	Old-fashioned glass	Ordinary Drink
+216	Lassi - Sweet	Non alcoholic	Put all ingredients into a blender and blend until nice and frothy. Serve chilled.	https://www.thecocktaildb.com/images/media/drink/9jeifz1487603885.jpg	Highball glass	Other/Unknown
+217	Lassi - Mango	Non alcoholic	Put it all in a blender and pour over crushed ice. You can also use other fruits like strawberries and bananas.	https://www.thecocktaildb.com/images/media/drink/1bw6sd1487603816.jpg	Highball glass	Other/Unknown
+218	Limona Corona	Alcoholic	Open the Corona. Fill the empty space in the neck in the bottle with the rum. The bottle should be filled to the top. Plug the bottle with your thumb or the palm of your hand. Turn the bottle upside-down so the rum and beer mix. Turn the bottle rightside-up, unplug, and drink.	https://www.thecocktaildb.com/images/media/drink/wwqrsw1441248662.jpg	Beer Glass	Beer
+219	Lady Love Fizz	Alcoholic	Shake all ingredients (except carbonated water) with ice and strain into a cocktail glass over two ice cubes. Fill with carbonated water, stir, and serve.	https://www.thecocktaildb.com/images/media/drink/20d63k1504885263.jpg	Cocktail glass	Ordinary Drink
+220	Long Island Tea	Alcoholic	Combine all ingredients (except cola) and pour over ice in a highball glass. Add the splash of cola for color. Decorate with a slice of lemon and serve.	https://www.thecocktaildb.com/images/media/drink/tppn6i1589574695.jpg	Highball glass	Ordinary Drink
+221	Lone Tree Cooler	Alcoholic	Stir powdered sugar and 2 oz. carbonated water in a collins glass. Fill glass with ice, add gin and vermouth, and stir. Fill with carbonated water and stir again. Add the twist of lemon peel and the orange spiral so that the end dangles over rim of glass.	https://www.thecocktaildb.com/images/media/drink/wsyqry1479298485.jpg	Collins glass	Ordinary Drink
+222	Lone Tree Cocktail	Alcoholic	Stir ingredients with ice, strain into a cocktail glass, and serve.	https://www.thecocktaildb.com/images/media/drink/tsxpty1468923417.jpg	Cocktail glass	Ordinary Drink
+223	Lazy Coconut Paloma	Alcoholic	Mix the coconut liqueur (preferably tequila) with the grapefruit juice and top with soda water. Garnish with a large grapefruit slice against the inside of the glass.	https://www.thecocktaildb.com/images/media/drink/rytuex1598719770.jpg	Highball glass	Cocktail
+224	Long Island Iced Tea	Alcoholic	Mix all contents in a highball glass and sitr gently. Add dash of Coca-Cola for the coloring and garnish with lemon or lime twist.	https://www.thecocktaildb.com/images/media/drink/wx7hsg1504370510.jpg	Highball glass	Ordinary Drink
+225	Lassi - A South Indian Drink	Non alcoholic	Blend in a blender for 3 seconds. Lassi is one of the easiest things to make, and there are many ways of making it. Basically, it is buttermilk (yoghurt whisked with water), and you can choose almost any consistency that you like, from the thinnest to the thickest. Serve cold.	https://www.thecocktaildb.com/images/media/drink/iq6scx1487603980.jpg	Highball Glass	Other/Unknown
+226	Melya	Non alcoholic	Brew espresso. In a coffee mug, place 1 teaspoon of unsweetened powdered cocoa, then cover a teaspoon with honey and drizzle it into the cup. Stir while the coffee brews, this is the fun part. The cocoa seems to coat the honey without mixing, so you get a dusty, sticky mass that looks as though it will never mix. Then all at once, presto! It looks like dark chocolate sauce. Pour hot espresso over the honey, stirring to dissolve. Serve with cream.	https://www.thecocktaildb.com/images/media/drink/xwtptq1441247579.jpg	Coffee mug	Coffee / Tea
+227	Mojito	Alcoholic	Muddle mint leaves with sugar and lime juice. Add a splash of soda water and fill the glass with cracked ice. Pour the rum and top with soda water. Garnish and serve with straw.	https://www.thecocktaildb.com/images/media/drink/3z6xdi1589574603.jpg	Highball glass	Cocktail
+228	Mimosa	Alcoholic	Ensure both ingredients are well chilled, then mix into the glass. Serve cold.	https://www.thecocktaildb.com/images/media/drink/juhcuu1504370685.jpg	Champagne flute	Ordinary Drink
+229	Mai Tai	Alcoholic	Shake all ingredients with ice. Strain into glass. Garnish and serve with straw.	https://www.thecocktaildb.com/images/media/drink/twyrrp1439907470.jpg	Collins glass	Ordinary Drink
+230	Martini	Alcoholic	Straight: Pour all ingredients into mixing glass with ice cubes. Stir well. Strain in chilled martini cocktail glass. Squeeze oil from lemon peel onto the drink, or garnish with olive.	https://www.thecocktaildb.com/images/media/drink/71t8581504353095.jpg	Cocktail glass	Cocktail
+231	Margarita	Alcoholic	Rub the rim of the glass with the lime slice to make the salt stick to it. Take care to moisten only the outer rim and sprinkle the salt on it. The salt should present to the lips of the imbiber and never mix into the cocktail. Shake the other ingredients with ice, then carefully pour into the glass.	https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg	Cocktail glass	Ordinary Drink
+232	Manhattan	Alcoholic	Stirred over ice, strained into a chilled glass, garnished, and served up.	https://www.thecocktaildb.com/images/media/drink/hz7p4t1589575281.jpg	Cocktail glass	Cocktail
+233	Mojito #3	Alcoholic	Put mint with lemon juice in a glas, mash the mint with a spoon, ice, rum & fill up with club soda. Top it with Angostura.	https://www.thecocktaildb.com/images/media/drink/vwxrsw1478251483.jpg	Collins glass	Cocktail
+234	Miami Vice	Alcoholic	First: Mix pina colada with 2.5 oz. of rum with ice(set aside). Second: Mix daiquiri with 2.5 oz. of rum with ice. Third: While frozen, add pina colda mix then daiquiri mix in glass (Making sure they do not get mixed together).	https://www.thecocktaildb.com/images/media/drink/qvuyqw1441208955.jpg	Cocktail glass	Cocktail
+235	Mudslinger	Alcoholic	Add all contents to a large jug or punch bowl. Stir well!	https://www.thecocktaildb.com/images/media/drink/hepk6h1504885554.jpg	Punch bowl	Punch / Party Drink
+236	Moranguito	Alcoholic	first you put rhe absinthe, then put tequila, then put the Granadine syrup.	https://www.thecocktaildb.com/images/media/drink/urpsyq1475667335.jpg	Shot glass	Shot
+238	Martinez 2	Alcoholic	Add all ingredients to a mixing glass and fill with ice.\r\n\r\nStir until chilled, and strain into a chilled coupe glass.	https://www.thecocktaildb.com/images/media/drink/fs6kiq1513708455.jpg	Cocktail glass	Cocktail
+239	Masala Chai	Non alcoholic	Bring 2 cups of water to boil. Add all the ingredients and boil again for about 15 seconds. Let stand for a minute. Warm milk in a pot. Filter tea into cups. Add milk and sugar. That's IT.	https://www.thecocktaildb.com/images/media/drink/uyrpww1441246384.jpg	Coffee Mug	Coffee / Tea
+240	Mulled Wine	Alcoholic	Simmer 3 cups water with, sugar, cloves, cinnamon sticks, and lemon peel in a stainless steel pot for 10 minutes. Add wine heat to a "coffee temperature" (DO NOT BOIL) then add the brandy.	https://www.thecocktaildb.com/images/media/drink/iuwi6h1504735724.jpg	Collins Glass	Punch / Party Drink
+241	Moscow Mule	Alcoholic	Combine vodka and ginger beer in a highball glass filled with ice. Add lime juice. Stir gently. Garnish.	https://www.thecocktaildb.com/images/media/drink/3pylqc1504370988.jpg	Copper Mug	Punch / Party Drink
+242	Mocha-Berry	Alcoholic	pour 6 oz. of coffee in a mug or Irish coffee cup. add coca mix and chambord, mix well and top off with whipped cream.	https://www.thecocktaildb.com/images/media/drink/vtwyyx1441246448.jpg	Irish coffee cup	Coffee / Tea
+243	Munich Mule	Alcoholic	Fill glass with ice\r\nPour Gin and Lime Juice\r\nFill glass with Ginger Beer\r\nGarnish with Cucumer and Lime slice	https://www.thecocktaildb.com/images/media/drink/rj55pl1582476101.jpg	Highball glass	Cocktail
+244	Monkey Gland	Alcoholic	Shake well over ice cubes in a shaker, strain into a chilled cocktail glass.	https://www.thecocktaildb.com/images/media/drink/94psp81504350690.jpg	Cocktail glass	Ordinary Drink
+245	Monkey Wrench	Alcoholic	Pour all of the ingredients into an old-fashioned glass almost filled with ice cubes. Stir well.	https://www.thecocktaildb.com/images/media/drink/bw2noj1582473243.jpg	Old-fashioned glass	Ordinary Drink
+246	Midnight Manx	Alcoholic	Fill a mixer with ice and add Baileys, Kahlua, Goldshlager, and cream. Shake for 5 seconds and Strain into a double rocks glass filled with ice. Add chilled coffee Stir and enjoy!	https://www.thecocktaildb.com/images/media/drink/uqqurp1441208231.jpg	Old-fashioned glass	Ordinary Drink
+247	Mother's Milk	Alcoholic	Shake over ice, strain. Serves two.	https://www.thecocktaildb.com/images/media/drink/7stuuh1504885399.jpg	Shot glass	Shot
+248	Midnight Mint	Alcoholic	If available, rim cocktail (Martini) glass with sugar syrup then dip into chocolate flakes or powder. Add ingredients into shaker with ice. Shake well then strain into cocktail glass.	https://www.thecocktaildb.com/images/media/drink/svuvrq1441208310.jpg	Cocktail glass	Cocktail
+249	Mary Pickford	Alcoholic	Shake and strain into a chilled large cocktail glass	https://www.thecocktaildb.com/images/media/drink/f9erqb1504350557.jpg	Cocktail glass	Cocktail
+250	Malibu Twister	Alcoholic	Add rum & trister then, add cranberry jucie,stir	https://www.thecocktaildb.com/images/media/drink/2dwae41504885321.jpg	Highball glass	Cocktail
+251	Negroni	Alcoholic	Stir into glass over ice, garnish and serve.	https://www.thecocktaildb.com/images/media/drink/qgdu971561574065.jpg	Old-fashioned glass	Ordinary Drink
+252	New York Sour	Alcoholic	Shake blended whiskey, juice of lemon, and powdered sugar with ice and strain into a whiskey sour glass. Float claret on top. Decorate with the half-slice of lemon and the cherry and serve.	https://www.thecocktaildb.com/images/media/drink/61wgch1504882795.jpg	Whiskey sour glass	Ordinary Drink
+253	Nutty Irishman	Alcoholic	Serve over ice	https://www.thecocktaildb.com/images/media/drink/xspupx1441248014.jpg	Highball Glass	Milk / Float / Shake
+254	National Aquarium	Alcoholic	Pour all ingredients into a shaker of ice. Shake well. Serve on the rocks.	https://www.thecocktaildb.com/images/media/drink/dlw0om1503565021.jpg	Collins Glass	Ordinary Drink
+255	New York Lemonade	Alcoholic	Serve in a chilled cocktail glass. Lemon and sugar the rim. Stir and Strain.	https://www.thecocktaildb.com/images/media/drink/b3n0ge1503565473.jpg	Cocktail glass	Cocktail
+256	Nuked Hot Chocolate	Non alcoholic	Mix with a bit of milk (1 oz or so) in coffee mug. Nuke mug for about 30-50 seconds. Stir until the heated cocoa dissolves. Fill mug with milk. Nuke for 1-2 minutes, depending on wattage and preferences as to burnt mouth parts.	https://www.thecocktaildb.com/images/media/drink/xcu6nb1487603142.jpg	Coffee mug	Cocoa
+257	Orgasm	Alcoholic	Shake all ingredients with ice, strain into a chilled cocktail glass, and serve.	https://www.thecocktaildb.com/images/media/drink/vr6kle1504886114.jpg	Cocktail glass	Ordinary Drink
+258	Old Pal	Alcoholic	Chill cocktail glass. Add ingredients to a mixing glass, and fill 2/3 full with ice. Stir about 20 seconds. Empty cocktail glass and strain into the glass. Garnish with a twist of lemon peel.	https://www.thecocktaildb.com/images/media/drink/x03td31521761009.jpg	Nick and Nora Glass	Cocktail
+259	Orangeade	Non alcoholic	Place some ice cubes in a large tumbler or highball glass, add lemon juice, orange juice, sugar syrup, and stir well. Top up with cold soda water, serve with a drinking straw.	https://www.thecocktaildb.com/images/media/drink/ytsxxw1441167732.jpg	Highball glass	Cocktail
+260	Orange Whip	Alcoholic	Pour ingredients over ice and stir.	https://www.thecocktaildb.com/images/media/drink/ttyrxr1454514759.jpg	Collins Glass	Other/Unknown
+261	Orange Oasis	Alcoholic	Shake brandy, gin, and orange juice with ice and strain into a highball glass over ice cubes. Fill with ginger ale, stir, and serve.	https://www.thecocktaildb.com/images/media/drink/su1olx1582473812.jpg	Highball glass	Ordinary Drink
+262	Orange Crush	Alcoholic	Add all ingredients to tumbler-Pour as shot	https://www.thecocktaildb.com/images/media/drink/zvoics1504885926.jpg	Shot glass	Shot
+263	Old Fashioned	Alcoholic	Place sugar cube in old fashioned glass and saturate with bitters, add a dash of plain water. Muddle until dissolved.\r\nFill the glass with ice cubes and add whiskey.\r\n\r\nGarnish with orange twist, and a cocktail cherry.	https://www.thecocktaildb.com/images/media/drink/vrwquq1478252802.jpg	Old-fashioned glass	Cocktail
+264	Oreo Mudslide	Alcoholic	Blend Vodka, Kahlua, Bailey's, ice-cream and the Oreo well in a blender. Pour into a large frosted glass. Garnish with whipped cream and a cherry.	https://www.thecocktaildb.com/images/media/drink/tpwwut1468925017.jpg	Collins Glass	Ordinary Drink
+265	Orange Push-up	Alcoholic	Combine liquors in a blender. Add a half scoop of ice and blend. Garnish with an orange and cherry flag. So good it will melt in your mouth!!!	https://www.thecocktaildb.com/images/media/drink/mgf0y91503565781.jpg	Hurricane glass	Ordinary Drink
+266	Oatmeal Cookie	Alcoholic	Just mix it all together.\r\nIt's meant to be a shot, but it works just fine as a proper adult-sized drink over lots of ice.\r\n\r\nTastes like an oatmeal cookie.	https://www.thecocktaildb.com/images/media/drink/bsvmlg1515792693.jpg	Mason jar	Cocktail
+267	Orange Scented Hot Chocolate	Non alcoholic	Combine all ingredients in heavy medium saucepan. Stir over low heat until chocolate melts. Increase heat and bring just to a boil, stirring often. Remove from heat and whisk untily frothy. Return to heat and bring to boil again. Remove from heat, whisk until frothy. Repeat heating and whisking once again. Discard orange peel. (Can be prepared 2 hours ahead. Let stand at room temperature. Before serving, bring just to boil, remove from heat and whisk until frothy.) Pour hot chocolate into coffee mugs. Makes 2 servings.	https://www.thecocktaildb.com/images/media/drink/hdzwrh1487603131.jpg	Coffee mug	Cocoa
+268	Owen's Grandmother's Revenge	Alcoholic	Add ingredients and mix in blender.	https://www.thecocktaildb.com/images/media/drink/0wt4uo1503565321.jpg	Highball glass	Ordinary Drink
+269	Paloma	Alcoholic	Stir together and serve over ice.	https://www.thecocktaildb.com/images/media/drink/samm5j1513706393.jpg	Collins glass	Cocktail
+270	Pink Gin	Alcoholic	Pour the bitters into a wine glass. Swirl the glass to coat the inside with the bitters, shake out the excess. Pour the gin into the glass. Do not add ice.	https://www.thecocktaildb.com/images/media/drink/qyr51e1504888618.jpg	White wine glass	Ordinary Drink
+271	Paradise	Alcoholic	Shake together over ice. Strain into cocktail glass and serve chilled.	https://www.thecocktaildb.com/images/media/drink/ejozd71504351060.jpg	Cocktail glass	Ordinary Drink
+272	Pink Lady	Alcoholic	Shake all ingredients with ice, strain into a cocktail glass, and serve.	https://www.thecocktaildb.com/images/media/drink/5ia6j21504887829.jpg	Cocktail glass	Ordinary Drink
+273	Pegu Club	Alcoholic	Shake, strain, up, cocktail glass	https://www.thecocktaildb.com/images/media/drink/jfkemm1513703902.jpg	Cocktail glass	Cocktail
+274	Pisco Sour	Alcoholic	Vigorously shake and strain contents in a cocktail shaker with ice cubes, then pour into glass and garnish with bitters.[1]	https://www.thecocktaildb.com/images/media/drink/tsssur1439907622.jpg	Cocktail glass	Cocktail
+275	Porto flip	Alcoholic	Shake ingredients together in a mixer with ice. Strain into glass, garnish and serve.	https://www.thecocktaildb.com/images/media/drink/64x5j41504351518.jpg	Cocktail glass	Ordinary Drink
+276	Penicillin	Alcoholic	Shake blended Scotch, lemon juice, honey syrup and ginger syrup with ice. Strain over large ice in chilled rocks glass. Float smoky Scotch on top (be sure to use a smoky Scotch such as an Islay single malt). Garnish with candied ginger.	https://www.thecocktaildb.com/images/media/drink/hc9b1a1521853096.jpg	Old-fashioned glass	Cocktail
+277	Pina Colada	Alcoholic	Mix with crushed ice in blender until smooth. Pour into chilled glass, garnish and serve.	https://www.thecocktaildb.com/images/media/drink/cpf4j51504371346.jpg	Collins glass	Ordinary Drink
+278	Pink Penocha	Alcoholic	mix all ingredients into bowl keep iced stir frequently	https://www.thecocktaildb.com/images/media/drink/6vigjx1503564007.jpg	Punch bowl	Punch / Party Drink
+279	Popped cherry	Alcoholic	Served over ice in a tall glass with a popped cherry (can add more popped cherries if in the mood)!	https://www.thecocktaildb.com/images/media/drink/sxvrwv1473344825.jpg	Highball glass	Ordinary Drink
+280	Poppy Cocktail	Alcoholic	Shake ingredients with ice, strain into a cocktail glass, and serve.	https://www.thecocktaildb.com/images/media/drink/cslw1w1504389915.jpg	Cocktail glass	Ordinary Drink
+281	Port Wine Flip	Alcoholic	Shake all ingredients (except nutmeg) with ice and strain into a whiskey sour glass. Sprinkle nutmeg on top and serve.	https://www.thecocktaildb.com/images/media/drink/vrprxu1441553844.jpg	Whiskey sour glass	Ordinary Drink
+282	Planter's Punch	Alcoholic	Pour all ingredients, except the bitters, into shaker filled with ice. Shake well. Pour into large glass, filled with ice. Add Angostura bitters, "on top". Garnish with cocktail cherry and pineapple.	https://www.thecocktaildb.com/images/media/drink/yvos231504351384.jpg	Collins glass	Punch / Party Drink
+283	Pineapple Paloma	Alcoholic	Rub the rim of each glass with lime slice and dip into salt.\r\nAdd ice, tequila, grapefruit juice, lime juice and top with pineapple soda.\r\nGive it a quick stir.\r\nGarnish with fresh pineapple or lime.	https://www.thecocktaildb.com/images/media/drink/pg8iw31593351601.jpg	Collins glass	Cocktail
+284	Port And Starboard	Alcoholic	Pour carefully into a pousse-cafe glass, so that creme de menthe floats on grenadine. Serve without mixing.	https://www.thecocktaildb.com/images/media/drink/wxvupx1441553911.jpg	Pousse cafe glass	Ordinary Drink
+285	Port Wine Cocktail	Alcoholic	Stir ingredients with ice, strain into a cocktail glass, and serve.	https://www.thecocktaildb.com/images/media/drink/qruprq1441553976.jpg	Cocktail glass	Ordinary Drink
+286	Pysch Vitamin Light	Non alcoholic	Shake with ice.	https://www.thecocktaildb.com/images/media/drink/xsqsxw1441553580.jpg	Collins Glass	Ordinary Drink
+287	Pink Panty Pulldowns	Alcoholic	Shake well	https://www.thecocktaildb.com/images/media/drink/squsuy1468926657.jpg	Collins Glass	Ordinary Drink
+288	Passion Fruit Martini	Alcoholic	Pour all ingredients into a glass and stir. Garnish with half a passion fruit piece.	https://www.thecocktaildb.com/images/media/drink/6trfve1582473527.jpg	Cocktail glass	Cocktail
+289	Pineapple Gingerale Smoothie	Non alcoholic	Throw everything into a blender and liquify.	https://www.thecocktaildb.com/images/media/drink/eg9i1d1487603469.jpg	Highball Glass	Other/Unknown
+290	Quentin	Alcoholic	In a shaker half-filled with ice cubes, combine the rum, Kahlua, and cream. Shake well. Strain into a cocktail glass and garnish with the nutmeg.	https://www.thecocktaildb.com/images/media/drink/spxtqp1478963398.jpg	Cocktail glass	Ordinary Drink
+291	Queen Bee	Alcoholic	Shake all ingredients with ice, strain into a cocktail glass, and serve.	https://www.thecocktaildb.com/images/media/drink/rvvpxu1478963194.jpg	Cocktail glass	Ordinary Drink
+292	Quick F**K	Alcoholic	In a shot glass add 1/3 Kahlua first. Then 1/3 Miduri, topping it off with a 1/3 bailey's irish cream	https://www.thecocktaildb.com/images/media/drink/wvtwpp1478963454.jpg	Shot glass	Shot
+293	Quick-sand	Alcoholic	Simply add the orange juice, quite a quick pour in order to mix the sambucca with the orange juice. The juice MUST have fruit pulp!	https://www.thecocktaildb.com/images/media/drink/vprxqv1478963533.jpg	Highball glass	Ordinary Drink
+294	Queen Charlotte	Alcoholic	Pour red wine and grenadine into a collins glass over ice cubes. Fill with lemon-lime soda, stir, and serve.	https://www.thecocktaildb.com/images/media/drink/vqruyt1478963249.jpg	Collins glass	Ordinary Drink
+295	Queen Elizabeth	Alcoholic	Stir all ingredients with ice, strain into a cocktail glass, and serve.	https://www.thecocktaildb.com/images/media/drink/vpqspv1478963339.jpg	Cocktail glass	Ordinary Drink
+296	Quaker's Cocktail	Alcoholic	Shake all ingredients with ice, strain into a cocktail glass, and serve.	https://www.thecocktaildb.com/images/media/drink/yrqppx1478962314.jpg	Cocktail glass	Ordinary Drink
+297	Quarter Deck Cocktail	Alcoholic	Stir all ingredients with ice, strain into a cocktail glass, and serve.	https://www.thecocktaildb.com/images/media/drink/qrwvps1478963017.jpg	Cocktail glass	Ordinary Drink
+298	Rose	Alcoholic	Shake together in a cocktail shaker, then strain into chilled glass. Garnish and serve.	https://www.thecocktaildb.com/images/media/drink/8kxbvq1504371462.jpg	Cocktail glass	Ordinary Drink
+299	Radler	Alcoholic	Pour beer into large mug, slowly add the 7-up (or Sprite).	https://www.thecocktaildb.com/images/media/drink/xz8igv1504888995.jpg	Highball glass	Ordinary Drink
+300	Rum Sour	Alcoholic	In a shaker half-filled with ice cubes, combine the rum, lemon juice, and sugar. Shake well. Strain into a sour glass and garnish with the orange slice and the cherry.	https://www.thecocktaildb.com/images/media/drink/bylfi21504886323.jpg	Whiskey sour glass	Ordinary Drink
+301	Rum Toddy	Alcoholic	Dissolve powdered sugar in water in an old-fashioned glass. Add rum and one ice cube and stir. Add the twist of lemon peel and serve.	https://www.thecocktaildb.com/images/media/drink/athdk71504886286.jpg	Old-fashioned glass	Ordinary Drink
+302	Rum Punch	Alcoholic	Mix all ingredients in a punch bowl and serve.	https://www.thecocktaildb.com/images/media/drink/wyrsxu1441554538.jpg	Punch bowl	Punch / Party Drink
+303	Royal Fizz	Alcoholic	Shake all ingredients (except cola) with ice and strain into a chilled collins glass. Fill with cola and serve.	https://www.thecocktaildb.com/images/media/drink/wrh44j1504390609.jpg	Collins glass	Ordinary Drink
+304	Rum Cooler	Alcoholic	Pour the rum and soda into a collins glass almost filled with ice cubes. Stir well and garnish with the lemon wedge.	https://www.thecocktaildb.com/images/media/drink/2hgwsb1504888674.jpg	Collins glass	Ordinary Drink
+305	Rusty Nail	Alcoholic	Pour the Scotch and Drambuie into an old-fashioned glass almost filled with ice cubes. Stir well. Garnish with the lemon twist.	https://www.thecocktaildb.com/images/media/drink/yqsvtw1478252982.jpg	Old-fashioned glass	Ordinary Drink
+306	Rum Runner	Alcoholic	Mix all ingredients in glass & add ice.	https://www.thecocktaildb.com/images/media/drink/vqws6t1504888857.jpg	Cocktail glass	Punch / Party Drink
+307	Rum Cobbler	Alcoholic	In an old-fashioned glass, dissolve the sugar in the club soda. Add crushed ice until the glass is almost full. Add the rum. Stir well. Garnish with the cherry and the orange and lemon slices.	https://www.thecocktaildb.com/images/media/drink/5vh9ld1504390683.jpg	Old-fashioned glass	Ordinary Drink
+308	Red Snapper	Alcoholic	One shot each, shake n shoot	https://www.thecocktaildb.com/images/media/drink/7p607y1504735343.jpg	Old-fashioned glass	Shot
+309	Royal Flush	Alcoholic	Pour all the ingredients into tumbler over ice. Strain into glass.	https://www.thecocktaildb.com/images/media/drink/7rnm8u1504888527.jpg	Old-fashioned glass	Shot
+310	Royal Bitch	Alcoholic	Into a shot glass layer the Crown Royal on top of the Frangelico.	https://www.thecocktaildb.com/images/media/drink/qupuyr1441210090.jpg	Shot glass	Shot
+311	Ruby Tuesday	Alcoholic	Pour gin and cranberry into a highball filled with ice cubes. Add grenadine and stir.	https://www.thecocktaildb.com/images/media/drink/qsyqqq1441553437.jpg	Highball glass	Cocktail
+312	Rail Splitter	Non alcoholic	Mix sugar syrup with lemon juice in a tall glass. Fill up with ginger ale.	https://www.thecocktaildb.com/images/media/drink/stsuqq1441207660.jpg	Highball glass	Cocktail
+313	Rosemary Blue	Alcoholic	1) Add the Bombay Sapphire, Blue Curacao, rosemary sprig and gently squeezed lemon wedge to a balloon glass. Swirl well to combine.\r\n2) Fill with cubed ice and top with the Fever-Tree Light Tonic Water.\r\n3) Gently fold with a bar spoon to mix.	https://www.thecocktaildb.com/images/media/drink/qwc5f91512406543.jpg	Balloon Glass	Cocktail
+314	Royal Gin Fizz	Alcoholic	Shake all ingredients (except carbonated water) with ice and strain into a highball glass over two ice cubes. Fill with carbonated water, stir, and serve.	https://www.thecocktaildb.com/images/media/drink/pe1x1c1504735672.jpg	Highball glass	Ordinary Drink
+315	Rum Milk Punch	Alcoholic	Shake all ingredients (except nutmeg) with ice and strain into a collins glass. Sprinkle nutmeg on top and serve.	https://www.thecocktaildb.com/images/media/drink/w64lqm1504888810.jpg	Collins glass	Ordinary Drink
+316	Raspberry Julep	Alcoholic	Softly muddle the mint leaves and raspberry syrup in the bottom of the cup. Add crushed ice and Bourbon to the cup and then stir. Top with more ice, garnish with a mint sprig.	https://www.thecocktaildb.com/images/media/drink/hyztmx1598719265.jpg	Cordial glass	Cocktail
+317	Rum Screwdriver	Alcoholic	Pour rum into a highball glass over ice cubes. Add orange juice, stir, and serve.	https://www.thecocktaildb.com/images/media/drink/4c85zq1511782093.jpg	Highball glass	Ordinary Drink
+318	Raspberry Cooler	Alcoholic	Pour the raspberry vodka and soda into a highball glass almost filled with ice cubes. Stir well.	https://www.thecocktaildb.com/images/media/drink/suqyyx1441254346.jpg	Highball glass	Other/Unknown
+319	Rum Old-fashioned	Alcoholic	Stir powdered sugar, water, and bitters in an old-fashioned glass. When sugar has dissolved add ice cubes and light rum. Add the twist of lime peel, float 151 proof rum on top, and serve.	https://www.thecocktaildb.com/images/media/drink/otn2011504820649.jpg	Old-fashioned glass	Ordinary Drink
+320	Russian Spring Punch	Alcoholic	Pour the ingredients into an highball glass, top with Sparkling wine.	https://www.thecocktaildb.com/images/media/drink/ctt20s1504373488.jpg	Highball glass	Ordinary Drink
+321	Radioactive Long Island Iced Tea	Alcoholic	Pour all ingredients over ice in a very tall glass. Sip cautiously.	https://www.thecocktaildb.com/images/media/drink/rdvqmh1503563512.jpg	Collins Glass	Ordinary Drink
+322	Smut	Alcoholic	Throw it all together and serve real cold.	https://www.thecocktaildb.com/images/media/drink/rx8k8e1504365812.jpg	Beer mug	Punch / Party Drink
+323	Spritz	Alcoholic	Build into glass over ice, garnish and serve.	https://www.thecocktaildb.com/images/media/drink/j9evx11504373665.jpg	Old-Fashioned glass	Ordinary Drink
+324	Sazerac	Alcoholic	Rinse a chilled old-fashioned glass with the absinthe, add crushed ice, and set it aside. Stir the remaining ingredients over ice and set it aside. Discard the ice and any excess absinthe from the prepared glass, and strain the drink into the glass. Add the lemon peel for garnish.	https://www.thecocktaildb.com/images/media/drink/vvpxwy1439907208.jpg	Old-fashioned glass	Ordinary Drink
+325	Scooter	Alcoholic	Shake all ingredients well with cracked ice, strain into a cocktail glass, and serve.	https://www.thecocktaildb.com/images/media/drink/twuptu1483388307.jpg	Cocktail glass	Ordinary Drink
+326	Sidecar	Alcoholic	Pour all ingredients into cocktail shaker filled with ice. Shake well and strain into cocktail glass.	https://www.thecocktaildb.com/images/media/drink/stwxuq1439906852.jpg	Cocktail glass	Ordinary Drink
+327	Stinger	Alcoholic	Pour in a mixing glass with ice, stir and strain into a cocktail glass. May also be served on rocks in a rocks glass.	https://www.thecocktaildb.com/images/media/drink/2ahv791504352433.jpg	Cocktail glass	Ordinary Drink
+328	Snowball	Alcoholic	Place one ice cube in the glass and add 1 1/2 oz of Advocaat. Fill up the glass with lemonade and decorate with a slice of lemon. Serve at once.	https://www.thecocktaildb.com/images/media/drink/7ibfs61504735416.jpg	Highball glass	Ordinary Drink
+329	Shot-gun	Alcoholic	Pour one part Jack Daneils and one part Jim Beam into shot glass then float Wild Turkey on top.	https://www.thecocktaildb.com/images/media/drink/2j1m881503563583.jpg	Shot glass	Shot
+330	Spice 75	Alcoholic	Gently warm 60g golden caster sugar in a pan with 30ml water and 1 tbsp allspice. Cook gently until the sugar has dissolved, then leave the mixture to cool. Strain through a sieve lined with a coffee filter (or a double layer of kitchen paper).\r\n\r\nPour 60ml of the spiced syrup into a cocktail shaker along with 200ml rum and 90ml lime juice. Shake with ice and strain between six flute glasses. Top up with 600ml champagne and garnish each with an orange twist.	https://www.thecocktaildb.com/images/media/drink/0108c41576797064.jpg	Wine Glass	Cocktail
+331	Salty Dog	Alcoholic	Pour all ingredients over ice cubes in a highball glass. Stir well and serve. (Vodka may be substituted for gin, if preferred.)	https://www.thecocktaildb.com/images/media/drink/4vfge01504890216.jpg	Highball glass	Ordinary Drink
+332	Stone Sour	Alcoholic	Shake all ingredients with ice, strain into a chilled whiskey sour glass, and serve.	https://www.thecocktaildb.com/images/media/drink/vruvtp1472719895.jpg	Whiskey sour glass	Ordinary Drink
+333	Sangria #1	Alcoholic	Mix all together in a pitcher and refrigerate. Add cloves and cinnamon sticks to taste. Serve in wine glasses.	https://www.thecocktaildb.com/images/media/drink/xrvxpp1441249280.jpg	Pitcher	Punch / Party Drink
+334	Sea breeze	Alcoholic	Build all ingredients in a highball glass filled with ice. Garnish with lime wedge.	https://www.thecocktaildb.com/images/media/drink/7rfuks1504371562.jpg	Highball glass	Ordinary Drink
+335	Scotch Sour	Alcoholic	Shake scotch, juice of lime, and powdered sugar with ice and strain into a whiskey sour glass. Decorate with 1/2 slice lemon, top with the cherry, and serve.	https://www.thecocktaildb.com/images/media/drink/0dnb6k1504890436.jpg	Whiskey sour glass	Ordinary Drink
+336	Screwdriver	Alcoholic	Mix in a highball glass with ice. Garnish and serve.	https://www.thecocktaildb.com/images/media/drink/8xnyke1504352207.jpg	Highball glass	Ordinary Drink
+337	Sherry Flip	Alcoholic	Shake all ingredients (except nutmeg) with ice and strain into a whiskey sour glass. Sprinkle nutmeg on top and serve.	https://www.thecocktaildb.com/images/media/drink/qrryvq1478820428.jpg	Nick and Nora Glass	Ordinary Drink
+338	Sweet Tooth	Alcoholic	Put 2 shots Godiva Liquour into a glass, add as much or as little milk as you would like.	https://www.thecocktaildb.com/images/media/drink/j6rq6h1503563821.jpg	Highball Glass	Milk / Float / Shake
+339	Sol Y Sombra	Alcoholic	Shake ingredients with ice, strain into a brandy snifter, and serve. (The English translation of the name of this drink is "Sun and Shade", and after sampling this drink, you'll understand why. Thanks, Kirby.)	https://www.thecocktaildb.com/images/media/drink/3gz2vw1503425983.jpg	Brandy snifter	Ordinary Drink
+340	Shark Attack	Alcoholic	Mix lemonade and water according to instructions on back of can. If the instructions say to add 4 1/3 cans of water do so. Mix into pitcher. Add 1 1/2 cup of Vodka (Absolut). Mix well. Pour into glass of crushed ice. Excellent!	https://www.thecocktaildb.com/images/media/drink/uv96zr1504793256.jpg	Pitcher	Cocktail
+341	Sherry Eggnog	Alcoholic	Shake sherry, powdered sugar, and egg with ice and strain into a collins glass. Fill with milk and stir. Sprinkle nutmeg on top and serve.	https://www.thecocktaildb.com/images/media/drink/xwrpsv1478820541.jpg	Collins glass	Ordinary Drink
+342	Sweet Bananas	Non alcoholic	Place all ingredients in the blender jar - cover and whiz on medium speed until well blended. Pour in one tall, 2 medium or 3 small glasses and drink up.	https://www.thecocktaildb.com/images/media/drink/sxpcj71487603345.jpg	Highball Glass	Milk / Float / Shake
+343	Sweet Sangria	Alcoholic	Dissolve the sugar in hot water and cool. Peel the citrus fruits and break into wedges. Mix the wine, sugar syrup, fruit, and Fresca in a pitcher and put in the fridge for a few hours. Serve in tall glasses with a straw.	https://www.thecocktaildb.com/images/media/drink/uqqvsp1468924228.jpg	Pitcher	Punch / Party Drink
+344	San Francisco	Alcoholic	Take a tall glass and put in a few ice cubes, fill the vodka over it and fill with juice then the "creme", to end fill in the grenadine but very carefully at the side of the glass so it will lay down in the bottom. garnish with orange and strawberry.	https://www.thecocktaildb.com/images/media/drink/szmj2d1504889961.jpg	Highball glass	Ordinary Drink
+345	Space Odyssey	Alcoholic	Fill glass with ice and add shots of Bacardi and Malibu. Add splash of pineapple juice and top with orange juice. Add grenadine for color and garnish with cherries.	https://www.thecocktaildb.com/images/media/drink/vxtjbx1504817842.jpg	Highball glass	Ordinary Drink
+346	Scotch Cobbler	Alcoholic	Pour scotch, brandy, and curacao over ice in an old-fashioned glass. Add the orange slice, top with the mint sprig, and serve.	https://www.thecocktaildb.com/images/media/drink/1q7coh1504736227.jpg	Old-fashioned glass	Ordinary Drink
+347	Thriller	Alcoholic	In a shaker half-filled with ice cubes, combine all of the ingredients. Shake well. Strain into a cocktail glass.	https://www.thecocktaildb.com/images/media/drink/rvuswq1461867714.jpg	Cocktail glass	Ordinary Drink
+348	Tia-Maria	Alcoholic	Boil water, sugar and coffe for 10 mins and let cool. Add rum and vanilla. Put in clean bottle(s) and leave for 1 week before using.	https://www.thecocktaildb.com/images/media/drink/sih81u1504367097.jpg	Collins Glass	Homemade Liqueur
+349	Tipperary	Alcoholic	Stir over ice. Strain into chilled glass. Cut a wide swath of orange peel, and express the orange oils over the drink. Discard orange twist.	https://www.thecocktaildb.com/images/media/drink/b522ek1521761610.jpg	Nick and Nora Glass	Cocktail
+350	Turkeyball	Alcoholic	Shake with ice and strain into a shot glass.	https://www.thecocktaildb.com/images/media/drink/rxurpr1441554292.jpg	Shot glass	Shot
+351	Tom Collins	Alcoholic	In a shaker half-filled with ice cubes, combine the gin, lemon juice, and sugar. Shake well. Strain into a collins glass alomst filled with ice cubes. Add the club soda. Stir and garnish with the cherry and the orange slice.	https://www.thecocktaildb.com/images/media/drink/qystvv1439907682.jpg	Collins glass	Ordinary Drink
+352	Tomato Tang	Non alcoholic	Place all ingredients in the blender jar - cover and whiz on medium speed until well blended. Pour in one tall, 2 medium or 3 small glasses and drink up.	https://www.thecocktaildb.com/images/media/drink/869qr81487603278.jpg	Highball glass	Other/Unknown
+353	Thai Coffee	Non alcoholic	Place the coffee and spices in the filter cone of your coffee maker. Brew coffee as usual, let it cool. In a tall glass, dissolve 1 or 2 teaspoons of sugar in an ounce of the coffee (it's easier to dissolve than if you put it right over ice). Add 5-6 ice cubes and pour coffee to within about 1 inch of the top of the glass. Rest a spoon on top of the coffee and slowly pour whipping cream into the spoon. This will make the cream float on top of the coffee rather than dispersing into it right away.	https://www.thecocktaildb.com/images/media/drink/wquwxs1441247025.jpg	Highball glass	Coffee / Tea
+354	Texas Sling	Alcoholic	Blend with Ice until smooth. Serve in a tulip glass, top with whip cream.	https://www.thecocktaildb.com/images/media/drink/ypl13s1504890158.jpg	Wine Glass	Milk / Float / Shake
+355	Tequila Fizz	Alcoholic	Shake all ingredients (except ginger ale) with ice and strain into a collins glass over ice cubes. Fill with ginger ale, stir, and serve.	https://www.thecocktaildb.com/images/media/drink/2bcase1504889637.jpg	Collins glass	Ordinary Drink
+356	Tequila Sour	Alcoholic	Shake tequila, juice of lemon, and powdered sugar with ice and strain into a whiskey sour glass. Add the half-slice of lemon, top with the cherry, and serve.	https://www.thecocktaildb.com/images/media/drink/ek0mlq1504820601.jpg	Whiskey sour glass	Ordinary Drink
+357	Talos Coffee	Alcoholic	Add your GM and then add your coffee.	https://www.thecocktaildb.com/images/media/drink/rswqpy1441246518.jpg	Brandy snifter	Coffee / Tea
+358	Tennesee Mud	Alcoholic	Mix Coffee, Jack Daniels and Amaretto. Add Cream on top.	https://www.thecocktaildb.com/images/media/drink/txruqv1441245770.jpg	Coffee Mug	Coffee / Tea
+359	Turf Cocktail	Alcoholic	Stir all ingredients (except orange peel) with ice and strain into a cocktail glass. Add the twist of orange peel and serve.	https://www.thecocktaildb.com/images/media/drink/utypqq1441554367.jpg	Cocktail glass	Ordinary Drink
+360	Thai Iced Tea	Non alcoholic	Combine Thai tea (i.e., the powder), boiling water, and sweetened condensed milk, stir until blended. Pour into 2 tall glasses filled with ice cubes. Garnish with mint leaves. Makes 2 servings.	https://www.thecocktaildb.com/images/media/drink/trvwpu1441245568.jpg	Highball glass	Coffee / Tea
+361	The Last Word	Alcoholic	Shake with ice and strain into a cocktail glass.	https://www.thecocktaildb.com/images/media/drink/91oule1513702624.jpg	Cocktail glass	Cocktail
+362	The Laverstoke	Alcoholic	1) Squeeze two lime wedges into a balloon glass then add the cordial, Bombay Sapphire and MARTINI Rosso Vermouth, swirl to mix.\r\n\r\n2) Fully fill the glass with cubed ice and stir to chill.\r\n\r\n3) Top with Fever-Tree Ginger Ale and gently stir again to combine.\r\n\r\n4) Garnish with a snapped ginger slice and an awoken mint sprig.	https://www.thecocktaildb.com/images/media/drink/6xfj5t1517748412.jpg	Balloon Glass	Cocktail
+363	Tuxedo Cocktail	Alcoholic	Stir all ingredients with ice and strain into a cocktail glass. Garnish with a cherry and a twist of lemon zest.	https://www.thecocktaildb.com/images/media/drink/4u0nbl1504352551.jpg	Cocktail glass	Ordinary Drink
+364	Tequila Sunrise	Alcoholic	Pour the tequila and orange juice into glass over ice. Add the grenadine, which will sink to the bottom. Stir gently to create the sunrise effect. Garnish and serve.	https://www.thecocktaildb.com/images/media/drink/quqyqp1480879103.jpg	Highball glass	Cocktail
+365	Tequila Slammer	Alcoholic	Mix carefully to avoid releasing the dissolved CO2.	https://www.thecocktaildb.com/images/media/drink/43uhr51551451311.jpg	Hurricane glass	Shot
+366	The Philosopher	Alcoholic	Add all the spirits in a shaker (best to use Hendricks gin) as well as the orange bitters and lemon juice. Strain into a Margarita glass, top with Prosecco.	https://www.thecocktaildb.com/images/media/drink/sp8hkp1596017787.jpg	Margarita glass	Cocktail
+367	Thai Iced Coffee	Non alcoholic	Prepare a pot of coffee at a good European strength. In the ground coffee, add 2 or 3 freshly ground cardamom pods. Sweeten while hot, then cool quickly. Serve in highball glass over ice, with cream. To get the layered effect, place a spoon atop the coffee and pour the milk carefully into the spoon so that it floats on the top of the coffee.	https://www.thecocktaildb.com/images/media/drink/rqpypv1441245650.jpg	Highball glass	Coffee / Tea
+368	Tequila Surprise	Alcoholic	Fill shot glass with Tequila. Add drops of Tobasco sauce.	https://www.thecocktaildb.com/images/media/drink/8189p51504735581.jpg	Shot glass	Shot
+369	The Jimmy Conway	Alcoholic	Fill glass with ice\r\nPour in The Irishman and Disaronno\r\nFill to the top with Cranberry Juice\r\nGarnish with a slice of lemon…Enjoy!	https://www.thecocktaildb.com/images/media/drink/wbcvyo1535794478.jpg	Whiskey sour glass	Cocktail
+370	Texas Rattlesnake	Alcoholic	Mix all ingredients and Shake well. Sweet at first, with a BITE at the end...	https://www.thecocktaildb.com/images/media/drink/rtohqp1504889750.jpg	Highball glass	Shot
+371	Tommy's Margarita	Alcoholic	Shake and strain into a chilled cocktail glass.	https://www.thecocktaildb.com/images/media/drink/loezxn1504373874.jpg	Old-Fashioned glass	Ordinary Drink
+372	Victor	Alcoholic	Shake all ingredients with ice, strain into a cocktail glass, and serve.	https://www.thecocktaildb.com/images/media/drink/voapgc1492976416.jpg	Cocktail glass	Ordinary Drink
+373	Vesper	Alcoholic	Shake over ice until well chilled, then strain into a deep goblet and garnish with a thin slice of lemon peel.	https://www.thecocktaildb.com/images/media/drink/mtdxpa1504374514.jpg	Cocktail glass	Cocktail
+374	Vesuvio	Alcoholic	Shake all ingredients with ice, strain into an old-fashioned glass over ice cubes, and serve.	https://www.thecocktaildb.com/images/media/drink/26cq601492976203.jpg	Old-fashioned glass	Ordinary Drink
+375	Veteran	Alcoholic	Pour the rum and cherry brandy into an old-fashioned glass almost filled with ice cubes. Stir well.	https://www.thecocktaildb.com/images/media/drink/iwml9t1492976255.jpg	Old-fashioned glass	Ordinary Drink
+376	Vampiro	Alcoholic	Vampiros may be made in a tall glass or an old fashioned glass. Bartenders may first "rim" the glass with Kosher Salt, which is done by placing a layer of Kosher Salt on a chopping board, moistening the glass' rim with lime juice or water, and then placing the upside down glass rim onto the Kosher Salt, so that the salt sticks to the moistened rim. The second step is to fill half the glass with ice and add one or two shooter glasses full of high quality Tequila. The next stage is to add the flavouring elements. This is done by squeezing a fresh lime into the glass, adding a few grains of salt, adding citrus-flavoured soda pop, until the glass is 4/5 full, and then adding spicy Viuda de Sanchez (or orange juice, lime juice and pico de gallo). The final step is to stir the ingredients so that the flavours are properly blended.	https://www.thecocktaildb.com/images/media/drink/yfhn371504374246.jpg	Old-Fashioned glass	Ordinary Drink
+377	Van Vleet	Alcoholic	Shake all ingredients with ice, strain into an old-fashioned glass over ice cubes, and serve.	https://www.thecocktaildb.com/images/media/drink/fgq2bl1492975771.jpg	Old-fashioned glass	Ordinary Drink
+378	Vodka Fizz	Alcoholic	Blend all ingredients, save nutmeg. Pour into large white wine glass and sprinkle nutmeg on top.	https://www.thecocktaildb.com/images/media/drink/xwxyux1441254243.jpg	White wine glass	Other/Unknown
+379	Vodka Martini	Alcoholic	Shake the vodka and vermouth together with a number of ice cubes, strain into a cocktail glass, add the olive and serve.	https://www.thecocktaildb.com/images/media/drink/qyxrqw1439906528.jpg	Cocktail glass	Ordinary Drink
+380	Vodka Russian	Alcoholic	Mix it as a ordinary drink .	https://www.thecocktaildb.com/images/media/drink/rpttur1454515129.jpg	Collins Glass	Ordinary Drink
+381	Vermouth Cassis	Alcoholic	Stir vermouth and creme de cassis in a highball glass with ice cubes. Fill with carbonated water, stir again, and serve.	https://www.thecocktaildb.com/images/media/drink/tswpxx1441554674.jpg	Highball glass	Ordinary Drink
+382	Victory Collins	Alcoholic	Shake all ingredients (except orange slice) with ice and strain into a collins glass over ice cubes. Add the slice of orange and serve.	https://www.thecocktaildb.com/images/media/drink/lx0lvs1492976619.jpg	Collins glass	Ordinary Drink
+383	Vodka And Tonic	Alcoholic	Pour vodka into a highball glass over ice cubes. Fill with tonic water, stir, and serve.	https://www.thecocktaildb.com/images/media/drink/lmj2yt1504820500.jpg	Highball glass	Ordinary Drink
+384	Valencia Cocktail	Alcoholic	Shake all ingredients with ice, strain into a cocktail glass, and serve.	https://www.thecocktaildb.com/images/media/drink/9myuc11492975640.jpg	Cocktail glass	Ordinary Drink
+385	Whisky Mac	Alcoholic	Pour both of the ingredients into a wine goblet with no ice.	https://www.thecocktaildb.com/images/media/drink/yvvwys1461867858.jpg	Collins Glass	Ordinary Drink
+386	Wine Punch	Alcoholic	Combine all of the ingredients and pour over a block of ice.	https://www.thecocktaildb.com/images/media/drink/txustu1473344310.jpg	Collins Glass	Punch / Party Drink
+387	White Lady	Alcoholic	Add all ingredients into cocktail shaker filled with ice. Shake well and strain into large cocktail glass.	https://www.thecocktaildb.com/images/media/drink/jofsaz1504352991.jpg	Cocktail glass	Ordinary Drink
+388	Wine Cooler	Optional alcohol	Mix wine and soft drink. Pour into glass. Add ice.	https://www.thecocktaildb.com/images/media/drink/yutxtv1473344210.jpg	Collins Glass	Punch / Party Drink
+389	Whiskey Sour	Alcoholic	Shake with ice. Strain into chilled glass, garnish and serve. If served 'On the rocks', strain ingredients into old-fashioned glass filled with ice.	https://www.thecocktaildb.com/images/media/drink/hbkfsh1589574990.jpg	Old-fashioned glass	Ordinary Drink
+390	White Russian	Alcoholic	Pour vodka and coffee liqueur over ice cubes in an old-fashioned glass. Fill with light cream and serve.	https://www.thecocktaildb.com/images/media/drink/vsrupw1472405732.jpg	Old-fashioned glass	Ordinary Drink
+391	Whitecap Margarita	Alcoholic	Place all ingredients in a blender and blend until smooth. This makes one drink.	https://www.thecocktaildb.com/images/media/drink/srpxxp1441209622.jpg	Margarita/Coupette glass	Other/Unknown
+392	White Wine Sangria	Alcoholic	Chop the Lemon, Lime and other fruits into large chunks. Fill the Pitcher with the white wine and mix in the Apple Brandy. Top to taste with soda water.	https://www.thecocktaildb.com/images/media/drink/hnuod91587851576.jpg	Pitcher	Punch / Party Drink
+393	Waikiki Beachcomber	Alcoholic	Shake all ingredients with ice, strain into a cocktail glass, and serve.	https://www.thecocktaildb.com/images/media/drink/ysuqus1441208583.jpg	Cocktail glass	Ordinary Drink
+394	Yellow Bird	Alcoholic	Shake and strain into a chilled cocktail glass	https://www.thecocktaildb.com/images/media/drink/2t9r6w1504374811.jpg	Cocktail glass	Cocktail
+395	Yoghurt Cooler	Non alcoholic	Place all ingredients in the blender jar - cover and whiz on medium speed until well blended. Pour in one tall, 2 medium or 3 small glasses and drink up. Note: Use lots of ice in this one - great on hot days! To add ice: Remove the center of the cover while the blender is on - drop 3 or 4 ice cubs and blend until they're completely crushed.	https://www.thecocktaildb.com/images/media/drink/trttrv1441254466.jpg	Highball Glass	Other/Unknown
+396	Zorro	Alcoholic	add all and pour black coffee and add whipped cream on top.	https://www.thecocktaildb.com/images/media/drink/kvvd4z1485621283.jpg	Coffee Mug	Coffee / Tea
+397	Zinger	Alcoholic	Get a shot glass and pour in three shots of the schnapps. Do the same with the Surge Cola. Then down it like Scheetz would.	https://www.thecocktaildb.com/images/media/drink/iixv4l1485620014.jpg	Highball glass	Soft Drink / Soda
+398	Zoksel	Alcoholic	No specific mixinginstructions, just poor every ingredient in one glass. The lemon goes with it.	https://www.thecocktaildb.com/images/media/drink/ft8ed01485620930.jpg	Beer pilsner	Soft Drink / Soda
+399	Zombie	Alcoholic	\r\nBlend at high speed for no more than 5 seconds.\r\n\r\nPour into a glass, add ice cubes to fill, then add the garnish.\r\n\r\n*Donn’s mix: Bring 3 crushed cinnamon sticks, 1 cup of sugar and 1 cup of water to a boil, stirring until the sugar is dissolved.\r\n\r\nSimmer for 2 minutes, then remove from the heat and let sit for at least 2 hours before straining into a clean glass bottle.\r\n\r\nThen add 1 part of the syrup and 2 parts of fresh grapefruit juice together.	https://www.thecocktaildb.com/images/media/drink/2en3jk1509557725.jpg	Hurricane glass	Cocktail
+400	Zambeer	Alcoholic	Mix sambuca with rootbeer and stir. Add ice	https://www.thecocktaildb.com/images/media/drink/bje5401485619578.jpg	Collins Glass	Soft Drink / Soda
+401	Zorbatini	Alcoholic	Prepare like a Martini. Garnish with a green olive.	https://www.thecocktaildb.com/images/media/drink/wtkqgb1485621155.jpg	Cocktail glass	Cocktail
+402	Zenmeister	Alcoholic	Mix together and enjoy	https://www.thecocktaildb.com/images/media/drink/qyuvsu1479209462.jpg	Collins Glass	Ordinary Drink
+403	Zipperhead	Alcoholic	Fill glass with rocks, add straw before putting in liquor. Then add the ingredients in order, trying to keep layered as much as possible (i.e. Chambord on bottom, then Vodka, Then soda on top).	https://www.thecocktaildb.com/images/media/drink/r2qzhu1485620235.jpg	Whiskey sour glass	Shot
+404	Zima Blaster	Alcoholic	Fill glass with ice. Pour in Chambord, then fill with Zima. Mix and enjoy.	https://www.thecocktaildb.com/images/media/drink/1wifuv1485619797.jpg	Hurricane glass	Ordinary Drink
+405	Zizi Coin-coin	Alcoholic	Pour 5cl of Cointreau on ice, add 2cl of fresh lemon (or lime) juice, stir gently, and finally add slices of lemon/lime in glass.	https://www.thecocktaildb.com/images/media/drink/0fbo2t1485620752.jpg	Margarita/Coupette glass	Punch / Party Drink
+406	Zippy's Revenge	Alcoholic	Mix Kool-Aid to taste then add Rum and ammaretto. shake well to disolve the sugar in the Kool-Aid... serve cold	https://www.thecocktaildb.com/images/media/drink/1sqm7n1485620312.jpg	Old-fashioned glass	Cocktail
+407	Zimadori Zinger	Alcoholic	Pour Zima in a collins glass over ice and then pour the shot of Midori. Don't stir. Garnish with a cherry.	https://www.thecocktaildb.com/images/media/drink/bw8gzx1485619920.jpg	Collins glass	Punch / Party Drink
+408	Ziemes Martini Apfelsaft	Alcoholic	Serve without ice. At least the juice shold have room temperature.	https://www.thecocktaildb.com/images/media/drink/xnzr2p1485619687.jpg	Collins Glass	Ordinary Drink
+\.
+
+
+--
+-- Data for Name: drinks_ingredients; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.drinks_ingredients (id, drink_id, ingredient_id, amount) FROM stdin;
+1	1	1	1 3/4 shot 
+2	1	2	1 Shot 
+3	1	3	1/4 Shot
+4	1	4	1/8 Shot
+5	2	5	1/3 
+6	2	6	1/3 
+7	2	7	1/3 
+8	3	1	2 shots 
+9	3	4	1/2 shot 
+10	3	8	1/2 shot 
+11	3	9	1/2 shot
+12	3	10	1/2 Fresh
+13	4	11	2 oz 
+14	4	3	1 oz 
+15	4	4	1 tsp 
+16	5	12	1 oz 
+17	5	1	1 oz 
+18	5	13	4 oz 
+19	6	14	1 oz Bacardi 
+20	6	15	1 oz 
+21	7	16	1 1/2 oz 
+22	7	17	1 oz 
+23	8	18	2 oz 
+24	8	19	2 oz 
+25	8	20	2 oz 
+26	8	21	desired amount
+27	9	19	4 cl 
+28	9	17	3 cl 
+29	9	22	1 cl 
+30	9	23	1 
+31	10	12	3 parts
+32	10	24	1 part 
+33	10	22	6 parts 
+34	10	3	1 1/2 part 
+35	10	25	desired amount
+36	11	11	1 1/2 oz 
+37	11	26	2 oz 
+38	11	19	3 oz 
+39	12	11	2 oz 
+40	12	27	1 oz 
+41	12	10	1 
+42	13	1	1 1/2 shot 
+43	13	28	1 1/2 shot 
+44	14	29	1 1/2 oz 
+45	14	30	1 1/2 tsp 
+46	14	31	1 tblsp 
+47	14	32	1 tsp 
+48	14	10	1 
+49	14	33	1 
+50	15	34	1 1/2 oz 
+51	15	35	1 oz 
+52	15	36	1 oz 
+53	15	37	2 dashes 
+54	16	16	1 oz 
+55	16	30	1 oz 
+56	16	3	1 oz 
+57	17	1	4.5 cl
+58	17	3	1.5 cl
+59	17	38	1.5 cl
+60	18	1	1/2 oz 
+61	18	39	1/2 oz white 
+62	18	40	2 oz 
+63	18	41	desired amount
+64	19	42	1 1/2 oz 
+65	19	36	1 oz 
+66	19	43	1 oz 
+67	20	36	1 oz 
+68	20	44	1 oz 
+69	20	45	1 1/2 tsp 
+70	20	3	1 1/2 tsp 
+71	20	46	1 twist of 
+72	21	35	1 1/2 tsp 
+73	21	1	1 1/2 oz 
+74	21	37	2 dashes 
+75	22	4	1 part 
+76	22	19	4 parts 
+77	22	43	4 parts 
+78	23	12	4 cl 
+79	23	31	1 dash 
+80	23	47	desired amount
+81	24	27	1 cl 
+82	24	6	1 cl 
+83	24	48	1 1/2 
+84	24	49	4 cl hot 
+85	24	6	desired amount
+86	25	12	2 cl 
+87	25	50	1 cl 
+88	25	19	desired amount
+89	26	27	1/3 shot 
+90	26	51	1/3 shot 
+91	26	2	1/3 shot 
+92	27	6	1/3 
+93	27	2	1/3 
+94	27	27	1/4 
+95	28	37	1 dash
+96	28	52	1 oz
+97	28	1	1 oz
+98	28	35	1 oz
+99	29	1	1 1/2 oz 
+100	29	30	1 oz 
+101	29	3	1 tsp 
+102	29	4	1/2 tsp 
+103	29	10	1 
+104	30	6	1/2 oz 
+105	30	53	1/2 oz 
+106	31	54	6 oz 
+107	31	55	1 oz 
+108	32	1	4 cl
+109	32	3	1.5 cl
+110	32	56	1 cl
+111	32	57	1.5 cl
+112	33	34	1 1/2 oz 
+113	33	35	1/2 oz 
+114	33	36	1/2 oz 
+115	33	37	2 dashes 
+116	34	1	1 1/2 oz 
+117	34	30	1/2 oz 
+118	34	58	1/2 oz 
+119	34	37	2 dashes 
+120	34	23	1 
+121	34	46	1 twist of 
+122	35	59	2 oz
+123	35	36	1 oz
+124	35	38	1/4 oz
+125	35	60	3 dashes
+126	35	23	1
+127	36	1	2 oz 
+128	36	36	1/2 oz 
+129	36	37	2 dashes 
+130	36	38	1/2 tsp 
+131	36	23	1 
+132	37	43	10 cl 
+133	37	61	6 cl 
+134	37	3	1 cl 
+135	37	4	1 cl 
+136	38	11	4.5 cl
+137	38	62	1.5 cl
+138	38	43	6 cl
+139	38	31	 1 dash
+140	38	63	top up 
+141	39	64	1 
+142	39	65	1 shot 
+143	40	66	4 oz
+144	40	52	1 oz
+145	40	67	1 oz
+146	41	14	1 shot
+147	41	34	1/2 shot
+148	41	37	3 drops
+149	41	68	1 Fresh
+150	41	3	cubes
+151	41	1	
+152	41	1	
+153	42	35	1 oz 
+154	42	69	1 1/2 oz 
+155	42	46	1 twist of 
+156	43	70	1/2 oz 
+157	43	71	1/2 oz 
+158	43	53	1/2 oz 
+159	44	12	1/4 
+160	44	72	1/4 
+161	44	19	1/4 
+162	44	55	1/4 
+163	45	73	2 oz 
+164	45	30	1/2 oz 
+165	45	31	2 wedges 
+166	45	74	2 oz 
+167	46	75	1 fifth 
+168	46	12	1 fifth Smirnoff red label 
+169	46	76	2 L 
+170	46	77	2 L 
+171	46	3	1 small bottle 
+172	46	11	1 pint 
+173	47	12	1 1/2 oz 
+174	47	78	3 oz 
+175	47	3	1 dash 
+176	47	79	1/2 tsp 
+177	47	80	2-3 drops 
+178	47	31	1 wedge 
+179	48	12	1 oz 
+180	48	58	1 oz 
+181	48	25	desired amount
+182	48	23	desired amount
+183	49	42	2 oz 
+184	49	3	Juice of 1/2 
+185	49	81	1 tsp 
+186	49	10	1 
+187	49	3	1 slice 
+188	49	23	1 
+189	50	45	2 oz 
+190	50	10	1 whole 
+191	50	32	1 tsp superfine 
+192	50	40	1/2 oz 
+193	50	41	1/8 tsp grated 
+194	51	1	2 oz 
+195	51	38	1/4 tsp 
+196	51	3	1/4 tsp 
+197	51	37	2 dashes 
+198	51	23	1 
+199	52	32	2 tsp
+200	52	31	1 
+201	52	82	2 1/2 oz 
+202	53	29	1 1/4 oz 
+203	53	83	1 1/2 tsp 
+204	53	40	1 tblsp 
+205	54	29	2 oz 
+206	54	31	Juice of 1/2 
+207	54	84	desired amount
+208	55	11	1-2 shot 
+209	55	31	Squeeze 
+210	55	84	Fill with 
+211	55	3	desired amount
+212	56	49	desired amount
+213	56	9	desired amount
+214	56	30	desired amount
+215	56	45	desired amount
+216	57	85	1 oz 
+217	57	86	desired amount
+218	58	31	1/2
+219	58	87	1/3 oz
+220	58	60	2 dashes
+221	58	88	1 oz
+222	58	89	1 oz
+223	59	29	2 oz 
+224	59	30	1 1/2 tsp 
+225	59	31	1 1/2 tsp 
+226	59	38	1 1/2 tsp 
+227	60	1	1 1/2 oz 
+228	60	4	2 tsp 
+229	60	3	Juice of 1/2 
+230	60	10	1 
+231	61	65	1 part 
+232	61	84	2 parts 
+233	62	29	1 oz 
+234	62	90	1 oz 
+235	62	3	Juice of 1/2 
+236	62	81	1 tsp 
+237	62	10	1 
+238	62	91	desired amount
+239	63	45	2 oz 
+240	63	30	1/2 oz 
+241	63	3	1 tblsp 
+242	64	13	2 cups 
+243	64	32	2 cups white 
+244	64	49	1/2 cup instant 
+245	64	92	1/2
+246	64	12	1 1/2 cup
+247	64	93	desired amount
+248	65	31	2 
+249	65	32	2 tblsp 
+250	65	94	2-3 oz 
+251	65	3	crushed 
+252	66	53	1 bottle 
+253	66	95	1 1/2 cl 
+254	67	96	1 1/4 oz 
+255	67	31	1/4 oz 
+256	67	97	1/4 oz 
+257	67	20	1/4 cup 
+258	68	1	2 oz 
+259	68	3	1/2 oz 
+260	68	38	1 tsp 
+261	68	37	1 dash 
+262	68	98	1 
+263	69	35	1 oz 
+264	69	69	1/2 oz 
+265	69	99	1/2 oz Muscatel 
+266	70	49	10 tblsp instant 
+267	70	100	4 tblsp 
+268	70	32	2 1/2 cups 
+269	70	12	1 qt 
+270	70	13	2 1/2 cups 
+271	71	101	1/2 shot 
+272	71	9	1/2 shot 
+273	71	5	1 dash 
+274	72	84	1 dl 
+275	72	3	7 drops 
+276	73	66	125 gr
+277	73	9	3/4 L 
+278	73	13	desired amount
+279	74	32	8 cups 
+280	74	13	6 cups 
+281	74	102	1 pint 
+282	74	103	1 oz pure 
+283	74	104	1 tblsp green 
+284	75	20	4 cups 
+285	75	32	1 1/2 cup 
+286	75	43	4 cups 
+287	75	105	1 tblsp 
+288	75	86	2 qt 
+289	76	1	6 cl
+290	76	106	2 dashes
+291	76	33	2 Fresh leaves
+292	77	53	1/2 pint 
+293	77	107	1/2 pint 
+294	77	108	1 dash 
+295	78	29	1 1/2 oz 
+296	78	31	Juice of 1/2 
+297	78	81	1 tsp 
+298	79	49	3 parts 
+299	79	75	1 part 
+300	80	1	1 1/2 oz 
+301	80	86	4 oz 
+302	80	31	1 
+303	81	109	2 part 
+304	81	110	1 part 
+305	81	111	2 shots 
+306	81	14	Float Bacardi 
+307	82	34	2 1/2 oz 
+308	82	36	1 1/2 tsp 
+309	82	46	1 twist of 
+310	83	1	1 2/3 oz 
+311	83	36	1/3 oz 
+312	83	112	1 
+313	84	27	desired amount
+314	84	51	desired amount
+315	84	6	desired amount
+316	85	12	70ml/2fl oz
+317	85	36	1 tbsp
+318	85	113	2 tbsp
+319	85	3	1 wedge
+320	85	112	1
+321	86	67	1 part 
+322	86	47	1 part 
+323	86	19	1 part 
+324	86	3	cubes
+325	87	114	2 tsp 
+326	87	31	1
+327	87	82	2 1/2 oz
+328	88	115	5 cl
+329	88	31	2.5 cl
+330	88	116	2.5 cl
+331	88	117	1.5 cl
+332	88	60	2 Dashes
+333	88	103	Pinch
+334	88	118	2 sprigs
+335	89	11	5 cl
+336	89	119	10 cl
+337	90	42	0.75 oz 
+338	90	120	0.25 oz 
+339	91	121	1 1/2 oz 
+340	91	1	3/4 oz 
+341	91	37	1 dash 
+342	91	46	1 twist of 
+343	92	8	2 oz 
+344	92	9	6-8 oz 
+345	92	122	1 stick 
+346	92	92	1 
+347	92	66	2 oz finely chopped dark 
+348	92	123	Fresh 
+349	93	124	2 shots
+350	93	54	Top
+351	93	1	
+352	93	1	
+353	93	1	
+354	93	1	
+355	93	1	
+356	94	125	2 tblsp 
+357	94	9	6 oz whole 
+358	94	47	6 oz 
+359	95	98	6 
+360	95	32	1/4 cup 
+361	95	9	2 cups 
+362	95	29	1/2 cup 
+363	95	44	1/2 cup 
+364	95	100	1 tsp 
+365	95	126	1/4 tsp 
+366	95	127	1 cup 
+367	95	10	6 
+368	95	32	1/4 cup 
+369	95	41	Ground 
+370	96	45	3/4 oz 
+371	96	1	3/4 oz 
+372	96	35	3/4 oz 
+373	96	91	desired amount
+374	96	46	desired amount
+375	97	12	5 cl
+376	97	27	1 cl
+377	97	56	1 dash
+378	98	11	1 shot
+379	98	128	1/2 shot
+380	98	129	1 shot
+381	98	49	1 shot
+382	99	10	1/2 cup 
+383	99	32	3 tblsp 
+384	99	130	13 oz skimmed 
+385	99	9	3/4 cup skimmed 
+386	99	100	1 tsp 
+387	99	11	1 tsp 
+388	99	41	\n
+389	100	131	3/4 oz 
+390	100	1	1 1/2 oz 
+391	100	36	3/4 oz 
+392	100	4	1 tsp 
+393	100	3	1/4 tsp 
+394	100	23	1 
+395	101	10	6 
+396	101	32	1/4 cup 
+397	101	126	1/4 tsp 
+398	101	9	1 qt 
+399	101	100	1 tsp 
+400	102	132	2 oz
+401	102	101	3/4 oz
+402	102	133	1/2 oz
+403	103	49	1/2 cup black 
+404	103	9	1/2 cup 
+405	103	32	1-2 tsp 
+406	104	5	1/2 oz 
+407	104	39	1/2 oz 
+408	104	40	2 oz 
+409	105	1	1 1/2 oz 
+410	105	32	2 tsp superfine 
+411	105	3	1 1/2 oz 
+412	105	54	4 oz Chilled 
+413	105	19	1 
+414	105	23	1 
+415	106	42	2 oz 
+416	106	134	1/2 oz 
+417	106	3	Juice of 1/4 
+418	106	31	Juice of 1/2 
+419	106	3	1 slice 
+420	106	31	1 slice 
+421	107	135	1 cup fruit 
+422	107	72	1 
+423	107	19	4 oz frozen 
+424	107	17	1/2 piece textural 
+425	107	3	6 
+426	108	22	1 can frozen 
+427	108	136	1 cup 
+428	108	32	2 tblsp 
+429	108	3	1 
+430	108	16	1 
+431	108	47	1 L 
+432	108	3	desired amount
+433	109	71	1/2 oz 
+434	109	51	1/2 oz 
+435	109	12	1/2 oz 
+436	110	49	1/2 
+437	110	55	1/2 
+438	111	11	2 shots
+439	111	137	1 shot
+440	111	138	1 shot
+441	111	3	Juice of 1/2
+442	111	47	Top
+443	111	1	
+444	111	1	
+445	112	12	4.5 cl
+446	112	139	1.5 cl
+447	112	43	1.5 cl
+448	113	1	1 oz
+449	113	140	1 oz
+450	113	35	1 oz
+451	113	141	1
+452	114	1	2 oz 
+453	114	30	1/2 oz 
+454	115	29	1 1/2 oz 
+455	115	30	1 tblsp 
+456	115	31	1 1/2 oz 
+457	115	32	1 tsp 
+458	115	23	1 
+459	115	3	1 cup crushed 
+460	116	135	1 cup 
+461	116	17	1 cup 
+462	117	142	1/2 oz 
+463	117	143	1/2 oz 
+464	117	80	1 dash 
+465	118	34	1 oz 
+466	118	35	1 oz 
+467	118	37	1 dash 
+468	118	56	1/4 tsp 
+469	119	7	1 1/2 oz 
+470	119	5	3/4 oz 
+471	120	5	1 oz 
+472	120	12	1 oz 
+473	120	14	1 oz Bacardi 
+474	120	144	1 oz 
+475	120	119	1 oz 
+476	121	51	1/4 glass 
+477	121	145	3/4 glass 
+478	122	27	1 oz 
+479	122	51	1 oz 
+480	122	58	1 oz 
+481	122	6	1 oz 
+482	123	29	2 oz 
+483	123	31	1 tblsp 
+484	123	33	6 
+485	123	32	1 tsp 
+486	124	29	1 1/2 oz 
+487	124	43	4 chunks 
+488	124	31	1 tblsp 
+489	124	32	1/2 tsp 
+490	125	62	2 1/2 shots 
+491	125	86	desired amount
+492	125	3	desired amount
+493	126	1	2 1/2 oz
+494	126	31	1/2 oz
+495	126	56	1/2 oz
+496	126	31	1
+497	127	1	2 oz 
+498	127	3	Juice of 1/2 
+499	127	81	1 tsp 
+500	127	91	desired amount
+501	128	1	2 oz 
+502	128	3	1 oz 
+503	128	32	1/2 tsp superfine 
+504	128	19	1 
+505	128	23	1 
+506	129	12	1 oz 
+507	129	5	1 oz 
+508	129	8	1 oz 
+509	130	1	2 oz 
+510	130	3	1 oz 
+511	130	32	1/2 tsp superfine 
+512	130	4	1/2 tsp 
+513	130	23	1 
+514	130	19	1 
+515	131	1	2 oz 
+516	131	3	Juice of 1/2 
+517	131	81	1 tsp 
+518	131	13	1 tsp 
+519	131	141	Twist of 
+520	132	1	2 oz 
+521	132	91	1 oz 
+522	132	32	1 cube 
+523	132	33	4 
+524	132	19	1 slice 
+525	132	23	1 
+526	133	1	2 oz 
+527	133	13	2 tsp 
+528	133	81	1/2 tsp 
+529	133	46	1 twist of 
+530	134	34	1 1/2 oz 
+531	134	5	3/4 oz 
+532	135	12	1 1/2 oz 
+533	135	5	3/4 oz 
+534	136	146	5 parts 
+535	136	3	3 parts 
+536	136	62	1 part 
+537	136	147	1 part 
+538	137	148	1 L 
+539	137	13	125 ml 
+540	137	32	60 gr 
+541	137	122	1 
+542	137	149	3 
+543	137	46	1 tblsp 
+544	138	12	1 1/2 oz
+545	138	17	3 oz
+546	139	1	2 oz 
+547	139	91	desired amount
+548	139	81	desired amount
+549	139	150	desired amount
+550	139	46	desired amount
+551	140	1	1 1/2 oz 
+552	140	4	1 tsp 
+553	140	81	1 tblsp 
+554	140	43	3 chunks
+555	140	136	2 
+556	140	91	desired amount
+557	141	151	1 1/2 cl 
+558	141	55	1 1/2 cl 
+559	141	58	1 1/2 cl 
+560	141	152	3 cl 
+561	142	1	2 oz 
+562	142	4	1 tsp 
+563	142	3	Juice of 1/2 
+564	142	47	Top up with
+565	142	31	Garnish
+566	143	31	1 1/2 oz 
+567	143	32	1 tsp superfine 
+568	143	1	2 oz 
+569	143	37	1 dash 
+570	143	21	3 oz 
+571	144	1	1 1/2 oz 
+572	144	30	1 oz 
+573	144	43	1 oz 
+574	144	4	1/2 tsp 
+575	144	43	1 
+576	145	27	1 oz 
+577	145	14	1 oz Bacardi 
+578	145	4	1 dash 
+579	146	153	3/4 oz 
+580	146	39	3/4 oz white 
+581	146	40	3/4 oz 
+582	147	5	1 part 
+583	147	71	1 part 
+584	147	27	1 part 
+585	147	9	2 1/2 parts 
+586	148	107	1/2 pint hard 
+587	148	53	1/2 pint 
+588	148	58	1 shot 
+589	149	62	2 parts
+590	149	30	2 parts
+591	149	19	2 parts
+592	149	6	1 part
+593	150	154	4 cl 
+594	150	6	8 cl 
+595	150	49	desired amount
+596	151	94	6 cl
+597	151	155	2 cl
+598	151	3	2 cl
+599	151	1	
+600	151	1	
+601	151	1	
+602	151	1	
+603	152	120	5 shots 
+604	152	156	very sweet 
+605	153	46	1 long strip 
+606	153	45	2 oz 
+607	153	86	5 oz 
+608	153	37	2 dashes 
+609	154	85	1 1/2 cl 
+610	154	86	desired amount
+611	154	31	desired amount
+612	154	3	desired amount
+613	155	28	25 ml
+614	155	23	15 ml
+615	155	56	10 ml
+616	155	25	100 ml
+617	155	157	2
+618	156	29	1 oz 
+619	156	43	1 oz 
+620	156	3	1 tsp 
+621	157	158	desired amount
+622	157	159	desired amount
+623	157	160	desired amount
+624	157	160	desired amount
+625	158	161	1 shot 
+626	158	6	3/4 shot 
+627	158	49	6 oz hot 
+628	159	32	2 1/2 cups 
+629	159	162	1 cup 
+630	159	49	1 1/2 oz instant 
+631	159	100	2 oz 
+632	159	13	3 cups boiling 
+633	159	12	1 fifth 
+634	160	163	1 bottle
+635	160	141	3
+636	160	164	1
+637	160	149	10
+638	160	86	6
+639	160	12	20 cl
+640	160	1	
+641	161	12	1 oz 
+642	161	62	1/2 oz 
+643	161	19	4 oz 
+644	162	1	2 oz 
+645	162	30	1/2 oz 
+646	162	43	1 tblsp 
+647	163	11	12 parts
+648	163	17	8 parts
+649	163	38	3 parts
+650	163	31	3 parts
+651	164	34	1 1/2 oz 
+652	164	35	3/4 oz 
+653	164	37	2 dashes 
+654	164	112	1 
+655	165	66	12 oz fine 
+656	165	165	1 tsp 
+657	165	100	1/2 tsp 
+658	165	166	1 cup 
+659	165	167	mini 
+660	166	31	½
+661	166	168	2 tsp
+662	166	61	4 cl
+663	166	86	top up with
+664	166	3	fill
+665	167	49	1/4 cup instant 
+666	167	32	1/4 cup 
+667	167	13	1/4 cup hot 
+668	167	9	4 cups cold 
+669	168	34	1 cup 
+670	168	166	1 1/4 cup 
+671	168	130	1 can sweetened 
+672	168	169	3 drops 
+673	168	125	1 tblsp 
+674	169	12	1 1/2 oz 
+675	169	170	6 oz 
+676	169	3	 to taste\n
+677	170	161	1 oz 
+678	170	171	1/2 oz 
+679	170	19	1 oz 
+680	170	152	1 oz 
+681	170	19	1 slice 
+682	170	23	1 
+683	171	161	1 1/2 oz 
+684	171	49	8 oz 
+685	171	32	1 tsp 
+686	171	123	1 tblsp 
+687	172	29	1/2 oz 
+688	172	42	1 1/2 oz 
+689	172	3	Juice of 1/2 
+690	172	81	1 tsp 
+691	172	91	desired amount
+692	173	12	1 shot 
+693	173	27	1 shot 
+694	173	84	1 dash 
+695	173	172	Fill with 
+696	174	31	4 cl 
+697	174	1	2 cl 
+698	174	173	4 cl 
+699	175	27	2 tsp 
+700	175	49	Strong cold 
+701	176	6	3/4 oz 
+702	176	44	3/4 oz 
+703	176	12	3/4 oz 
+704	176	19	2-3 oz 
+705	177	1	2 jiggers 
+706	177	12	1 jigger 
+707	177	4	3 dashes 
+708	177	31	1 shot 
+709	177	32	Around rim put 1 pinch 
+710	177	56	3 dashes 
+711	177	47	Fill to top with 
+712	178	6	2/3 oz
+713	178	174	1/3 oz
+714	178	56	1 tsp
+715	178	32	2 pinches
+716	179	45	1 oz 
+717	179	175	1 oz 
+718	180	176	1 oz 
+719	180	5	1 oz 
+720	181	12	2 cups 
+721	181	177	3 packages 
+722	181	13	3 cups 
+723	182	44	2 oz 
+724	182	3	1 oz 
+725	182	32	1 tsp superfine 
+726	182	21	3 oz 
+727	182	23	1 
+728	182	19	1 
+729	183	133	1 shot 
+730	183	29	1 shot Jamaican 
+731	183	3	cubes
+732	183	9	desired amount
+733	184	42	1 1/2 oz 
+734	184	3	Juice of 1/2 
+735	184	81	1 tsp 
+736	184	90	1 tblsp
+737	184	10	1 
+738	184	91	desired amount
+739	185	9	2 cups 
+740	185	125	desired amount
+741	185	178	desired amount
+742	186	11	1/6 glass 
+743	186	49	1/6 glass strong black 
+744	186	13	1/2 glass cold 
+745	186	123	desired amount
+746	187	1	1 1/2 oz 
+747	187	52	1/2 oz 
+748	187	179	1/2 oz 
+749	188	180	1 1/2 oz 
+750	188	4	1 tsp 
+751	188	31	Juice of 1/2 
+752	189	3	4-5 
+753	189	181	2 oz 
+754	189	100	1 tsp 
+755	189	84	10-12 oz 
+756	190	182	1 part 
+757	190	54	5 parts 
+758	191	49	1 part 
+759	191	102	2 parts 
+760	192	12	1 oz 
+761	192	30	1 oz 
+762	192	31	1 oz 
+763	193	182	1 part 
+764	193	54	5 parts 
+765	194	183	4 cl 
+766	194	156	Turkish apple 
+767	194	32	 (if needed)\n
+768	195	184	1 part 
+769	195	185	2 parts 
+770	195	3	cubes
+771	196	27	1 oz 
+772	196	45	1/2 oz 
+773	196	49	desired amount
+774	197	12	1 shot 
+775	197	5	1 shot 
+776	197	69	1 shot 
+777	197	30	1 shot 
+778	197	20	desired amount
+779	198	186	4 cl 
+780	198	187	2 cl 
+781	198	188	7 cl 
+782	198	22	8 cl 
+783	198	3	cubes
+784	199	14	2 oz light 
+785	199	189	1/2 tsp Tropical 
+786	200	44	2 oz 
+787	200	134	1/2 oz 
+788	201	44	3 oz 
+789	201	134	1/2 oz 
+790	201	46	1 twist of 
+791	202	189	1/2 oz Grape 
+792	202	12	1/2 oz 
+793	203	184	3 
+794	203	190	1/2 
+795	204	86	1 inch 
+796	204	3	1/4 
+797	204	13	1 cup hot 
+798	205	31	Juice of 1 
+799	205	32	1 tblsp 
+800	205	47	 (seltzer water)\n
+801	205	191	desired amount
+802	206	119	3/4 bottle 
+803	206	5	1 shot 
+804	206	19	1 oz 
+805	207	62	1/2 oz 
+806	207	96	1/2 oz 
+807	207	3	 wedge\n
+808	207	32	Bacardi 
+809	207	14	desired amount
+810	208	12	5 cl 
+811	208	31	1/2 
+812	208	60	4 dashes 
+813	208	13	1 dl Schweppes 
+814	208	3	4 
+815	209	12	1 1/2 shot 
+816	209	97	1 1/2 shot 
+817	209	3	Juice of 1 wedge 
+818	210	34	2 oz 
+819	210	192	1/2 oz 
+820	210	36	1/2 oz 
+821	210	46	1 twist of 
+822	211	1	1 1/2 oz 
+823	211	38	1/2 oz 
+824	211	37	2 dashes 
+825	212	135	1 cup 
+826	212	13	2 cups cold 
+827	212	126	1 tsp 
+828	212	193	1 pinch 
+829	213	135	2 cups 
+830	213	3	4-6 
+831	213	32	desired amount
+832	213	31	desired amount
+833	213	126	desired amount
+834	214	86	2 pieces 
+835	214	13	1 gal 
+836	214	3	1 lb 
+837	214	32	1 cup 
+838	214	194	ground 
+839	215	11	1 1/2 oz 
+840	215	195	1/2 oz 
+841	216	135	1 cup 
+842	216	13	2 cups cold 
+843	216	32	4 tblsp 
+844	216	126	pinch 
+845	216	3	2 tblsp 
+846	217	196	2 
+847	217	135	2 cups 
+848	217	32	1/2 cup 
+849	217	13	1 cup iced 
+850	218	64	1 bottle 
+851	218	65	1 oz 
+852	219	1	2 oz 
+853	219	40	2 tsp 
+854	219	81	1 tsp 
+855	219	3	Juice of 1/2
+856	219	10	1 
+857	219	91	desired amount
+858	220	12	1/2 oz 
+859	220	29	1/2 oz 
+860	220	1	1/2 oz 
+861	220	111	1/2 oz 
+862	220	3	Juice of 1/2 
+863	220	84	1 splash 
+864	221	91	desired amount
+865	221	1	desired amount
+866	221	36	desired amount
+867	221	81	desired amount
+868	221	150	desired amount
+869	221	46	desired amount
+870	222	35	3/4 oz 
+871	222	1	1 1/2 oz 
+872	223	197	30 ml
+873	223	17	75 ml
+874	223	47	Top
+875	223	1	
+876	223	1	
+877	223	1	
+878	223	1	
+879	224	12	1/2 oz 
+880	224	111	1/2 oz 
+881	224	29	1/2 oz 
+882	224	1	1/2 oz 
+883	224	84	1 dash 
+884	224	46	Twist of 
+885	225	135	1/2 cup plain 
+886	225	13	1 1/4 cup cold 
+887	225	198	1/2 tsp ground roasted 
+888	225	126	1/4 tsp 
+889	225	33	1/4 tsp dried 
+890	226	129	desired amount
+891	226	155	desired amount
+892	226	199	desired amount
+893	227	29	2-3 oz 
+894	227	31	Juice of 1 
+895	227	32	2 tsp 
+896	227	33	2-4 
+897	227	47	desired amount
+898	228	54	Chilled 
+899	228	19	2 oz 
+900	229	29	1 oz 
+901	229	200	1/2 oz 
+902	229	30	1/2 oz 
+903	229	152	1 1/2 oz 
+904	229	23	1 
+905	230	1	1 2/3 oz 
+906	230	36	1/3 oz 
+907	230	112	1 
+908	231	111	1 1/2 oz 
+909	231	30	1/2 oz 
+910	231	31	1 oz 
+911	231	126	desired amount
+912	232	35	3/4 oz 
+913	232	44	2 1/2 oz Blended 
+914	232	60	dash 
+915	232	3	2 or 3 
+916	232	23	1 
+917	232	141	1 twist of 
+918	233	33	1/2 handful 
+919	233	3	3 cl 
+920	233	11	1/8 L Jamaican 
+921	233	21	1/8 L 
+922	233	60	8 drops 
+923	234	14	5 oz Bacardi 
+924	234	201	frozen 
+925	234	202	frozen 
+926	235	73	750 ml 
+927	235	19	1 L 
+928	235	203	750 ml 
+929	236	124	2/5 
+930	236	111	2/5 
+931	236	4	1/5 
+932	237	33	4 fresh 
+933	237	44	2 1/2 oz 
+934	237	81	1 tsp 
+935	237	13	2 tsp 
+936	238	1	1 1/2 oz
+937	238	35	1 1/2 oz
+938	238	38	1 tsp
+939	238	60	2 dashes
+940	239	13	2 cups 
+941	239	156	3-4 tsp 
+942	239	86	1 chunk dried 
+943	239	204	3-4 crushed 
+944	239	149	3 
+945	239	122	1 piece 
+946	239	205	1-2 whole 
+947	239	32	 to taste\n
+948	239	9	desired amount
+949	240	13	3 cups 
+950	240	32	1 cup 
+951	240	149	12 
+952	240	122	2 
+953	240	46	1 
+954	240	148	750 ml 
+955	240	45	1/4 cup 
+956	241	12	2 oz 
+957	241	31	2 oz 
+958	241	86	8 oz 
+959	242	49	6 oz 
+960	242	174	2 oz 
+961	242	199	2 tblsp 
+962	242	123	desired amount
+963	243	1	5 cl
+964	243	31	2 cl
+965	243	119	10 cl
+966	243	206	Chopped
+967	243	3	Chopped
+968	243	1	
+969	243	1	
+970	244	1	2 oz 
+971	244	134	1 tsp 
+972	244	19	1/2 oz 
+973	244	4	1 tsp 
+974	245	29	1 1/2 oz 
+975	245	17	3 oz 
+976	245	37	1 dash 
+977	246	27	1 oz 
+978	246	6	1 oz 
+979	246	53	dash 
+980	246	8	2 oz 
+981	246	49	2 oz Hazlenut 
+982	247	53	1 oz 
+983	247	207	1 oz 
+984	247	9	1 oz 
+985	248	6	1 oz 
+986	248	208	3/4 oz 
+987	248	6	3/4 oz double 
+988	249	29	1 1/2 oz 
+989	249	43	1 oz 
+990	249	38	1/2 tsp 
+991	249	4	1/2 tsp 
+992	249	23	1 
+993	250	151	2 parts 
+994	250	209	2 parts 
+995	250	20	1 part 
+996	251	1	1 oz 
+997	251	95	1 oz 
+998	251	35	1 oz 
+999	252	42	2 oz 
+1000	252	3	Juice of 1/2 
+1001	252	32	1 tsp 
+1002	252	148	 (Claret)\n
+1003	252	3	desired amount
+1004	252	23	desired amount
+1005	253	6	1 part 
+1006	253	48	1 part 
+1007	253	9	1 part 
+1008	254	11	1/2 oz 
+1009	254	12	1/2 oz 
+1010	254	1	1/2 oz 
+1011	254	58	1/2 oz 
+1012	254	74	2 oz 
+1013	254	210	1 splash 
+1014	255	96	2 oz 
+1015	255	2	1 oz 
+1016	255	3	2 oz sweetened 
+1017	255	21	1 oz 
+1018	256	199	2 tsp 
+1019	256	32	1 tsp 
+1020	256	100	1/2 tsp 
+1021	256	9	12 oz 
+1022	257	39	1/2 oz white 
+1023	257	5	1/2 oz 
+1024	257	30	1/2 oz 
+1025	257	12	1/2 oz 
+1026	257	40	1 oz 
+1027	258	59	2 oz
+1028	258	95	1 oz
+1029	258	36	1 oz
+1030	259	3	5 cl 
+1031	259	19	15 cl 
+1032	259	56	2-3 cl 
+1033	259	47	desired amount
+1034	260	19	4 oz 
+1035	260	11	1 oz 
+1036	260	12	1 oz 
+1037	260	6	1 package 
+1038	260	3	Over 
+1039	261	83	1/2 oz 
+1040	261	1	1 1/2 oz 
+1041	261	19	4 oz 
+1042	261	86	desired amount
+1043	262	12	1 oz 
+1044	262	30	1 oz 
+1045	262	19	1 oz 
+1046	263	44	4.5 cL
+1047	263	60	2 dashes
+1048	263	32	1 cube
+1049	263	13	dash
+1050	264	12	1 oz 
+1051	264	27	1 oz 
+1052	264	6	1 oz 
+1053	264	211	2 scoops 
+1054	264	212	1 
+1055	265	85	1.5 oz 
+1056	265	4	0.5 oz 
+1057	265	19	4 oz 
+1058	265	74	1 splash 
+1059	266	27	2 parts
+1060	266	6	2 parts
+1061	266	207	4 parts
+1062	266	213	1 part
+1063	266	53	1/2 part
+1064	267	9	2 cups 
+1065	267	66	4 oz chopped bittersweet or semi-sweet 
+1066	267	141	3 2-inch strips 
+1067	267	129	1/2 tsp instant 
+1068	267	41	1/8 tsp ground 
+1069	268	42	12 oz 
+1070	268	119	12 oz 
+1071	268	25	12 oz frozen 
+1072	268	3	1 cup crushed 
+1073	269	214	3 oz
+1074	269	111	1 1/2 oz
+1075	270	37	3 dashes 
+1076	270	1	2 oz 
+1077	271	1	7 parts
+1078	271	131	4 parts
+1079	271	19	3 parts 
+1080	272	1	1 1/2 oz 
+1081	272	4	1 tsp 
+1082	272	40	1 tsp 
+1083	272	10	1 
+1084	273	1	1 1/2 oz
+1085	273	215	3/4 oz
+1086	273	31	3/4 oz
+1087	273	60	1 dash
+1088	273	37	1 dash
+1089	274	115	2 oz 
+1090	274	3	1 oz 
+1091	274	32	1-2 tblsp 
+1092	274	3	desired amount
+1093	275	45	3 parts
+1094	275	90	9 parts
+1095	275	98	2 parts
+1096	276	216	2 oz
+1097	276	3	3/4 oz
+1098	276	217	2 tsp
+1099	276	218	2 tsp
+1100	276	219	1/4 oz
+1101	277	29	3 oz 
+1102	277	220	3 tblsp 
+1103	277	43	3 tblsp 
+1104	278	75	750 ml 
+1105	278	12	1750 ml 
+1106	278	55	1750 ml 
+1107	278	19	1 gal 
+1108	278	20	1 gal 
+1109	279	12	2 oz 
+1110	279	221	2 oz 
+1111	279	20	4 oz 
+1112	279	19	4 oz 
+1113	280	1	1 1/2 oz 
+1114	280	39	3/4 oz white 
+1115	281	90	1 1/2 oz 
+1116	281	40	2 tsp 
+1117	281	81	1 tsp 
+1118	281	10	1 whole 
+1119	281	41	desired amount
+1120	282	11	1 part 
+1121	282	200	1/2 part 
+1122	282	19	2 parts 
+1123	282	43	1 part 
+1124	283	111	4 oz
+1125	283	17	4 oz
+1126	283	222	1 oz
+1127	283	43	8 oz
+1128	283	31	Garnish with
+1129	283	103	Rimmed
+1130	283	1	
+1131	284	4	1 tblsp 
+1132	284	153	1/2 oz 
+1133	285	90	2 1/2 oz 
+1134	285	45	1/2 tsp 
+1135	286	19	1 part 
+1136	286	22	1 part 
+1137	286	43	1 part 
+1138	286	3	desired amount
+1139	287	110	1 L 
+1140	287	223	2 cups 
+1141	287	12	2 cups 
+1142	288	12	1 shot
+1143	288	56	1/2 shot
+1144	288	61	Full Glass
+1145	288	1	
+1146	288	1	
+1147	288	1	
+1148	288	1	
+1149	289	86	1/4 inch 
+1150	289	43	1/2 
+1151	290	11	1 1/2 oz 
+1152	290	27	1/2 oz 
+1153	290	40	1 oz 
+1154	290	41	1/8 tsp grated 
+1155	291	224	1 oz 
+1156	291	225	1 1/2 oz 
+1157	291	226	1/2 oz cream 
+1158	292	27	1 part 
+1159	292	70	1 part 
+1160	292	6	1 part 
+1161	293	227	25 ml 
+1162	293	19	Add 250 ml 
+1163	294	148	2 oz 
+1164	294	4	1 oz 
+1165	294	210	desired amount
+1166	295	36	1/2 oz 
+1167	295	1	1 1/2 oz 
+1168	295	134	1 1/2 tsp 
+1169	296	29	3/4 oz 
+1170	296	45	3/4 oz 
+1171	296	3	Juice of 1/4 
+1172	296	228	2 tsp 
+1173	297	29	1 1/2 
+1174	297	226	1/3 oz cream 
+1175	297	31	Juice of 1/2 
+1176	298	36	1/2 oz 
+1177	298	1	1 oz 
+1178	298	131	1/2 oz 
+1179	298	3	1/2 tsp 
+1180	298	4	1 tsp 
+1181	298	81	desired amount
+1182	299	119	12 oz 
+1183	299	229	12 oz 
+1184	300	29	2 oz 
+1185	300	3	1 oz 
+1186	300	32	1/2 tsp superfine 
+1187	300	19	1 
+1188	300	23	1 
+1189	301	11	2 oz light or dark 
+1190	301	81	2 tsp 
+1191	301	46	1 twist of 
+1192	301	13	2 tsp 
+1193	302	11	mikey bottle 
+1194	302	86	large bottle 
+1195	302	109	355 ml frozen 
+1196	302	19	355 ml frozen 
+1197	302	3	crushed 
+1198	303	1	1 oz 
+1199	303	152	2 oz 
+1200	303	10	1 whole 
+1201	303	84	desired amount
+1202	304	11	2 oz light or dark 
+1203	304	210	4 oz 
+1204	304	3	1 
+1205	305	34	1 1/2 oz 
+1206	305	192	1/2 oz 
+1207	305	46	1 twist of 
+1208	306	151	1 1/2 oz 
+1209	306	45	1 oz 
+1210	306	19	3-4 oz 
+1211	306	43	3-4 oz 
+1212	306	20	3-4 oz 
+1213	307	32	1 tsp superfine 
+1214	307	21	3 oz 
+1215	307	3	1 
+1216	307	11	2 oz 
+1217	307	23	1 
+1218	307	19	1 
+1219	308	230	1 shot 
+1220	308	5	1 shot 
+1221	308	20	1 shot 
+1222	309	230	1 1/2 oz 
+1223	309	55	1 oz 
+1224	309	174	1/2 oz 
+1225	309	20	1 oz 
+1226	310	48	1 part 
+1227	310	230	1 part 
+1228	311	1	2 oz 
+1229	311	20	5 oz 
+1230	311	4	2 splashes 
+1231	312	56	2 tsp 
+1232	312	3	desired amount
+1233	312	86	desired amount
+1234	313	1	50 ml
+1235	313	58	15 ml
+1236	313	13	100 ml
+1237	313	231	Garnish with
+1238	314	1	2 oz 
+1239	314	3	Juice of 1/2 
+1240	314	81	1 tsp 
+1241	314	10	1 whole 
+1242	314	91	desired amount
+1243	315	29	2 oz 
+1244	315	9	1 cup 
+1245	315	81	1 tsp 
+1246	315	41	desired amount
+1247	316	44	2 oz
+1248	316	228	1/2 oz
+1249	316	33	8
+1250	316	1	
+1251	316	1	
+1252	316	1	
+1253	316	1	
+1254	317	29	1 1/2 oz 
+1255	317	19	5 oz 
+1256	318	232	2 oz 
+1257	318	210	4 oz 
+1258	318	3	desired amount
+1259	319	29	1 1/2 oz 
+1260	319	14	1 tsp 
+1261	319	81	1/2 tsp 
+1262	319	37	1 dash 
+1263	319	13	1 tsp 
+1264	319	191	Twist of 
+1265	320	12	2.5 cl
+1266	320	182	1.5 cl
+1267	320	56	1 cl
+1268	320	3	2.5 cl
+1269	321	11	1 oz 
+1270	321	12	1 oz 
+1271	321	111	1 oz 
+1272	321	1	1 oz 
+1273	321	30	1 oz 
+1274	321	174	1 oz 
+1275	321	70	1 oz 
+1276	321	151	1 oz 
+1277	322	148	1/3 part 
+1278	322	55	1 shot 
+1279	322	203	1/3 part 
+1280	322	19	1/3 part 
+1281	323	63	6 cl
+1282	323	95	4 cl
+1283	323	47	splash
+1284	324	233	1 tsp 
+1285	324	32	1/2 tsp superfine 
+1286	324	234	2 dashes 
+1287	324	13	1 tsp 
+1288	324	44	2 oz 
+1289	324	46	1 twist of 
+1290	325	45	1 oz 
+1291	325	5	1 oz 
+1292	325	40	1 oz 
+1293	326	7	2 oz 
+1294	326	97	1/2 oz 
+1295	326	3	1 oz 
+1296	327	45	1 1/2 oz 
+1297	327	208	1/2 oz 
+1298	328	235	1 1/2 oz 
+1299	328	25	8-10 oz cold 
+1300	328	3	1 slice 
+1301	328	3	cubes
+1302	329	236	1 part 
+1303	329	176	1 part 
+1304	329	15	1 oz 
+1305	330	32	60 ml
+1306	330	237	1 tblsp
+1307	330	11	20 cl
+1308	330	31	90 ml
+1309	330	54	6 cl
+1310	330	150	Garnish with
+1311	330	1	
+1312	331	17	5 oz 
+1313	331	1	1 1/2 oz 
+1314	331	126	1/4 tsp 
+1315	332	131	1 oz 
+1316	332	19	1 oz 
+1317	332	152	1 oz 
+1318	333	148	1 bottle 
+1319	333	32	1/2 cup 
+1320	333	19	1 cup 
+1321	333	3	1 cup 
+1322	333	149	desired amount
+1323	333	122	desired amount
+1324	334	12	1 1/2 oz 
+1325	334	20	4 oz 
+1326	334	17	1 oz 
+1327	335	34	1 1/2 oz 
+1328	335	31	Juice of 1/2 
+1329	335	81	1/2 tsp 
+1330	335	3	1/2 slice 
+1331	335	23	1 
+1332	336	12	2 oz 
+1333	336	19	desired amount
+1334	337	226	1 1/2 oz cream 
+1335	337	40	2 tsp 
+1336	337	81	1 tsp 
+1337	337	10	1 whole 
+1338	337	41	desired amount
+1339	338	238	2 shots 
+1340	338	9	desired amount
+1341	339	45	1 1/2 oz 
+1342	339	239	1 1/2 oz 
+1343	340	25	1 can 
+1344	340	13	3 cans 
+1345	340	12	1 1/2 cup 
+1346	341	226	2 oz cream 
+1347	341	81	1 tsp 
+1348	341	10	1 whole 
+1349	341	9	desired amount
+1350	341	41	desired amount
+1351	342	9	2 cups 
+1352	342	72	1 
+1353	342	155	1 tblsp 
+1354	343	148	2 bottles 
+1355	343	32	1 cup 
+1356	343	13	2 cups hot 
+1357	343	16	1 cup
+1358	343	19	 wedges\n
+1359	343	31	 wedges\n
+1360	343	3	desired amount
+1361	343	240	desired amount
+1362	344	12	2 cl 
+1363	344	50	2 cl 
+1364	344	4	desired amount
+1365	344	19	desired amount
+1366	345	14	1 shot Bacardi 
+1367	345	151	1 shot 
+1368	345	43	1 shot 
+1369	345	19	desired amount
+1370	345	4	desired amount
+1371	345	241	desired amount
+1372	346	34	2 oz 
+1373	346	45	4 dashes 
+1374	346	58	4 dashes 
+1375	346	19	1 slice 
+1376	346	33	1 
+1377	347	34	1 1/2 oz 
+1378	347	99	1 oz Green Ginger 
+1379	347	19	1 oz 
+1380	348	13	1 cup 
+1381	348	168	3/4-1 cup 
+1382	348	49	4 tsp 
+1383	348	11	1 cup 
+1384	348	100	4 tsp 
+1385	349	161	2 oz
+1386	349	35	1 oz
+1387	349	52	1/2 oz
+1388	350	15	1 oz 
+1389	350	5	3/4 oz 
+1390	350	43	1 splash 
+1391	351	1	2 oz 
+1392	351	3	1 oz 
+1393	351	32	1 tsp superfine 
+1394	351	21	3 oz 
+1395	351	23	1 
+1396	351	19	1 
+1397	352	78	2 cups 
+1398	352	3	1-2 tblsp 
+1399	352	242	1 dash 
+1400	353	49	6 tblsp ground
+1401	353	243	1/4 tsp 
+1402	353	204	4-5 whole green 
+1403	353	32	desired amount
+1404	353	127	desired amount
+1405	353	3	desired amount
+1406	354	27	1/2 oz 
+1407	354	6	1/2 oz 
+1408	354	5	1/2 oz 
+1409	354	14	1/2 oz Bacardi 
+1410	354	6	1 oz 
+1411	355	111	2 oz 
+1412	355	3	1 tblsp 
+1413	355	4	3/4 oz 
+1414	355	10	1 
+1415	355	86	desired amount
+1416	356	111	2 oz 
+1417	356	3	Juice of 1/2 
+1418	356	81	1 tsp 
+1419	356	3	1/2 slice 
+1420	356	23	1 
+1421	357	2	3 parts 
+1422	357	49	1 part 
+1423	358	49	8 oz 
+1424	358	176	4 oz 
+1425	358	5	4 oz 
+1426	358	123	desired amount
+1427	359	36	1 oz 
+1428	359	1	1 oz 
+1429	359	175	1/4 tsp 
+1430	359	37	2 dashes 
+1431	359	141	Twist of 
+1432	360	156	1/4 cup Thai 
+1433	360	13	1/2 cup boiling 
+1434	360	130	2 tsp sweetened 
+1435	360	3	cubes
+1436	360	33	garnish
+1437	361	52	1 oz
+1438	361	38	1 oz
+1439	361	31	1 oz
+1440	362	1	50 ml
+1441	362	244	15 ml
+1442	362	245	15 ml
+1443	362	13	75 ml
+1444	362	31	2 Wedges
+1445	362	86	1 Slice
+1446	362	33	1 Large Sprig
+1447	363	36	1 1/2 oz 
+1448	363	1	1 1/2 oz 
+1449	363	38	1/4 tsp 
+1450	363	175	1/4 tsp 
+1451	363	37	2 dashes 
+1452	363	23	1 
+1453	364	111	2 measures 
+1454	364	19	desired amount
+1455	364	4	desired amount
+1456	365	111	1 shot
+1457	365	229	1 part
+1458	366	1	1 shot
+1459	366	70	1 shot
+1460	366	37	1 dash
+1461	366	3	1 dash
+1462	366	63	Top
+1463	366	1	
+1464	366	1	
+1465	367	49	black
+1466	367	32	desired amount
+1467	367	6	desired amount
+1468	367	204	desired amount
+1469	368	111	full glass 
+1470	368	80	About 8 drops 
+1471	369	161	50 ml
+1472	369	5	50 ml
+1473	369	20	4 oz
+1474	370	246	1 part 
+1475	370	83	1/2 part 
+1476	370	73	1 part 
+1477	370	152	1 splash 
+1478	371	111	4.5 cl
+1479	371	31	1.5 cl
+1480	371	247	2 spoons
+1481	372	1	1 1/2 oz 
+1482	372	35	1/2 oz 
+1483	372	45	1/2 oz 
+1484	373	1	6 cl
+1485	373	12	1.5 cl
+1486	373	248	0.75 cl
+1487	374	29	1 oz 
+1488	374	35	1/2 oz 
+1489	374	3	Juice of 1/2 
+1490	374	81	1 tsp 
+1491	374	10	1 
+1492	375	11	2 oz 
+1493	375	83	1/2 oz 
+1494	376	111	6 cl
+1495	376	78	3 cl
+1496	376	19	3 cl
+1497	376	31	1.5 cl
+1498	376	56	1 dash
+1499	376	126	1 pinch
+1500	377	29	3 oz 
+1501	377	249	1 oz 
+1502	377	3	1 oz 
+1503	378	12	2 oz 
+1504	378	166	2 oz 
+1505	378	250	2 oz 
+1506	378	3	desired amount
+1507	378	41	desired amount
+1508	379	12	1 1/2 oz 
+1509	379	36	3/4 oz 
+1510	379	112	1 
+1511	380	12	2 oz 
+1512	380	188	desired amount
+1513	381	36	1 1/2 oz 
+1514	381	182	3/4 oz 
+1515	381	91	desired amount
+1516	382	12	1 1/2 oz 
+1517	382	3	3 oz 
+1518	382	158	3 oz unsweetened 
+1519	382	81	1 tsp 
+1520	382	19	1 slice 
+1521	383	12	2 oz 
+1522	383	13	desired amount
+1523	384	131	1 1/2 oz 
+1524	384	19	1 tblsp 
+1525	384	37	2 dashes 
+1526	385	34	1 1/2 oz 
+1527	385	99	1 oz Green Ginger 
+1528	386	148	1 bottle 
+1529	386	3	2 
+1530	386	19	1 cup 
+1531	386	19	3 
+1532	386	43	1 cup 
+1533	387	1	4cl
+1534	387	30	3cl
+1535	387	3	2cl
+1536	388	148	2 oz white or 
+1537	388	210	5 oz 
+1538	388	3	cubes
+1539	389	42	2 oz 
+1540	389	3	Juice of 1/2 
+1541	389	81	1/2 tsp 
+1542	389	23	1 
+1543	389	3	1/2 slice 
+1544	390	12	2 oz 
+1545	390	133	1 oz 
+1546	390	40	desired amount
+1547	391	3	1 cup 
+1548	391	111	2 oz 
+1549	391	251	1/4 cup 
+1550	391	31	3 tblsp fresh 
+1551	392	31	1
+1552	392	3	1
+1553	392	252	750 ml
+1554	392	136	1 cup
+1555	392	16	1 cup
+1556	392	180	3 shots
+1557	392	47	Top
+1558	393	30	3/4 oz 
+1559	393	1	3/4 oz 
+1560	393	43	1 tblsp 
+1561	394	94	3 cl
+1562	394	62	1.5 cl
+1563	394	30	1.5 cl
+1564	394	31	1.5 cl
+1565	395	135	1 cup 
+1566	395	17	1 cup 
+1567	395	3	desired amount
+1568	396	51	2 cl 
+1569	396	6	2 cl 
+1570	396	208	2 cl 
+1571	397	253	4 shots 
+1572	397	77	4 shots 
+1573	398	119	desired amount
+1574	398	254	desired amount
+1575	398	25	desired amount
+1576	398	84	desired amount
+1577	398	229	desired amount
+1578	398	182	desired amount
+1579	398	3	desired amount
+1580	399	11	1 1/2 oz
+1581	399	255	1 1/2 oz
+1582	399	14	1 oz
+1583	399	256	1 tsp
+1584	399	4	1 tsp
+1585	399	31	1 tsp
+1586	399	60	1 drop
+1587	400	51	1 1/2 oz 
+1588	400	254	Add 10 oz 
+1589	400	3	cubes
+1590	401	12	1 1/4 oz Stoli 
+1591	401	257	1/4 oz 
+1592	402	71	1/2 oz 
+1593	402	254	1/2 oz 
+1594	403	174	1 shot 
+1595	403	12	1 shot 
+1596	403	47	Fill with 
+1597	404	258	12 oz 
+1598	404	174	3 oz 
+1599	405	97	5 cl 
+1600	405	3	2 cl 
+1601	405	3	cubes
+1602	405	3	 or lime\n
+1603	406	5	2 oz 
+1604	406	11	2 oz 
+1605	406	189	4 oz Grape 
+1606	407	70	1.5 oz 
+1607	407	258	12 oz 
+1608	408	28	4 cl 
+1609	408	22	16 cl 
+\.
+
+
+--
+-- Data for Name: favorites; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.favorites (id, user_id, drink_id) FROM stdin;
+3	2	23
+4	1	5
+6	1	1
+\.
+
+
+--
+-- Data for Name: ingredients; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.ingredients (id, name) FROM stdin;
+1	Gin
+2	Grand Marnier
+3	Lemon Juice
+4	Grenadine
+5	Amaretto
+6	Baileys irish cream
+7	Cognac
+8	Heavy cream
+9	Milk
+10	Egg White
+11	Dark rum
+12	Absolut Vodka
+13	Tonic water
+14	151 proof rum
+15	Wild Turkey
+16	Applejack
+17	Grapefruit juice
+18	Strawberry schnapps
+19	Orange juice
+20	Cranberry juice
+21	Club soda
+22	Apple juice
+23	Maraschino cherry
+24	Pisang Ambon
+25	Lemonade
+26	Peach nectar
+27	Kahlua
+28	Vermouth
+29	Light rum
+30	Triple sec
+31	Lime juice
+32	Sugar
+33	Mint
+34	Scotch
+35	Sweet Vermouth
+36	Dry Vermouth
+37	Orange bitters
+38	maraschino liqueur
+39	Creme de Cacao
+40	Light cream
+41	Nutmeg
+42	Blended whiskey
+43	Pineapple juice
+44	Bourbon
+45	Blackberry brandy
+46	Lemon peel
+47	Soda water
+48	Frangelico
+49	Coffee
+50	Creme de Banane
+51	Sambuca
+52	Green Chartreuse
+53	Goldschlager
+54	Champagne
+55	Peach schnapps
+56	Sugar syrup
+57	Creme de Mure
+58	Blue Curacao
+59	Rye Whiskey
+60	Angostura Bitters
+61	Passion fruit juice
+62	Galliano
+63	Prosecco
+64	Corona
+65	Bacardi Limon
+66	Hot Chocolate
+67	Cherry Heering
+68	Wormwood
+69	Sloe gin
+70	Midori melon liqueur
+71	Jägermeister
+72	Banana liqueur
+73	Southern Comfort
+74	Sour mix
+75	Everclear
+76	Mountain Dew
+77	Surge
+78	Tomato juice
+79	Worcestershire sauce
+80	Tabasco sauce
+81	Powdered sugar
+82	Cachaca
+83	Cherry brandy
+84	Coca-Cola
+85	Spiced rum
+86	Ginger ale
+87	Falernum
+88	Añejo rum
+89	blackstrap rum
+90	Port
+91	Carbonated water
+92	Vanilla
+93	Caramel coloring
+94	White rum
+95	Campari
+96	Absolut Citron
+97	Cointreau
+98	Egg yolk
+99	Wine
+100	Vanilla extract
+101	Chocolate liqueur
+102	Grain alcohol
+103	Peppermint extract
+104	Food coloring
+105	Almond flavoring
+106	Peach Bitters
+107	Cider
+108	Blackcurrant cordial
+109	Fruit punch
+110	Sprite
+111	Tequila
+112	Olive
+113	Olive Brine
+114	demerara Sugar
+115	Pisco
+116	Pineapple Syrup
+117	St. Germain
+118	Lavender
+119	Ginger Beer
+120	Hot Damn
+121	Dubonnet Rouge
+122	Cinnamon
+123	Whipped cream
+124	Absinthe
+125	Chocolate syrup
+126	Salt
+127	Whipping cream
+128	Vanilla syrup
+129	Espresso
+130	Condensed milk
+131	Apricot brandy
+132	Mezcal
+133	Coffee liqueur
+134	Benedictine
+135	Yoghurt
+136	Strawberries
+137	Apricot Nectar
+138	Pomegranate juice
+139	Raspberry Liqueur
+140	Lillet
+141	Orange Peel
+142	Firewater
+143	Absolut Peppar
+144	Dr. Pepper
+145	Sarsaparilla
+146	Peach Vodka
+147	Sirup of roses
+148	Red wine
+149	Cloves
+150	Orange spiral
+151	Malibu rum
+152	Sweet and sour
+153	Green Creme de Menthe
+154	Whisky
+155	Honey
+156	Tea
+157	Blackberries
+158	Grape juice
+159	Carbonated soft drink
+160	Sherbet
+161	Irish whiskey
+162	Corn syrup
+163	Cherry Juice
+164	Red Chili Flakes
+165	Butter
+166	Half-and-half
+167	Marshmallows
+168	Brown sugar
+169	Coconut syrup
+170	Iced tea
+171	Peach brandy
+172	Guinness stout
+173	Aperol
+174	Chambord raspberry liqueur
+175	Anis
+176	Jack Daniels
+177	Jello
+178	Mint syrup
+179	Yellow Chartreuse
+180	Apple brandy
+181	Tennessee whiskey
+182	Creme de Cassis
+183	Absolut Kurant
+184	Kiwi liqueur
+185	Bitter lemon
+186	Cranberry vodka
+187	Apfelkorn
+188	Schweppes Russchian
+189	Kool-Aid
+190	Papaya
+191	Lime peel
+192	Drambuie
+193	Asafoetida
+194	Cayenne pepper
+195	Tia maria
+196	Mango
+197	Coconut Liqueur
+198	Cumin seed
+199	Cocoa powder
+200	Orgeat syrup
+201	Pina colada mix
+202	Daiquiri mix
+203	Pepsi Cola
+204	Cardamom
+205	Black pepper
+206	Cucumber
+207	Butterscotch schnapps
+208	White Creme de Menthe
+209	Tropicana
+210	Lemon-lime soda
+211	Vanilla ice-cream
+212	Oreo cookie
+213	Jagermeister
+214	Grape Soda
+215	Orange Curacao
+216	Blended Scotch
+217	Honey syrup
+218	Ginger Syrup
+219	Islay single malt Scotch
+220	Coconut milk
+221	Cherry liqueur
+222	Fresh Lime Juice
+223	Pink lemonade
+224	Coffee brandy
+225	Lime vodka
+226	Sherry
+227	Black Sambuca
+228	Raspberry syrup
+229	7-Up
+230	Crown Royal
+231	Rosemary
+232	Raspberry vodka
+233	Ricard
+234	Peychaud bitters
+235	Advocaat
+236	Jim Beam
+237	Allspice
+238	Godiva liqueur
+239	Anisette
+240	Fresca
+241	Cherries
+242	Celery salt
+243	Coriander
+244	Elderflower cordial
+245	Rosso Vermouth
+246	Yukon Jack
+247	Agave syrup
+248	Lillet Blanc
+249	Maple syrup
+250	Limeade
+251	Cream of coconut
+252	White Wine
+253	Peachtree schnapps
+254	Root beer
+255	Gold rum
+256	Pernod
+257	Ouzo
+258	Zima
+\.
+
+
+--
+-- Data for Name: ratings; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.ratings (id, rating, user_id, drink_id) FROM stdin;
+4	3.5	1	5
+\.
+
+
+--
+-- Data for Name: recommendations; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.recommendations (id, recommender_id, recommend_to_user_id, drink_id) FROM stdin;
+4	2	1	23
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.users (id, username, first_name, last_name, email, password) FROM stdin;
+1	shawn1	shawn	shawn	shawn1@test.com	$2b$12$2vDDL9UiFD12xSY/IOBdauFrMXgpJY03nJvJd09FTORfrIggrxehu
+2	shawn2	shawn	shawn	shawn2@test.com	$2b$12$V.rF/L9PWOMClV2MBQUg2eCpauRSPJ1cFSCh6NQAsxeR7Hox13XuG
+\.
+
+
+--
+-- Name: drinks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.drinks_id_seq', 408, true);
+
+
+--
+-- Name: drinks_ingredients_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.drinks_ingredients_id_seq', 1609, true);
+
+
+--
+-- Name: favorites_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.favorites_id_seq', 6, true);
+
+
+--
+-- Name: ingredients_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.ingredients_id_seq', 258, true);
+
+
+--
+-- Name: ratings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.ratings_id_seq', 4, true);
+
+
+--
+-- Name: recommendations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.recommendations_id_seq', 4, true);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 4, true);
+
+
+--
+-- Name: drinks_ingredients drinks_ingredients_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.drinks_ingredients
+    ADD CONSTRAINT drinks_ingredients_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: drinks drinks_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.drinks
+    ADD CONSTRAINT drinks_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: favorites favorites_drink_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.favorites
+    ADD CONSTRAINT favorites_drink_id_key UNIQUE (drink_id);
+
+
+--
+-- Name: favorites favorites_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.favorites
+    ADD CONSTRAINT favorites_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ingredients ingredients_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ingredients
+    ADD CONSTRAINT ingredients_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ratings ratings_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ratings
+    ADD CONSTRAINT ratings_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: recommendations recommendations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.recommendations
+    ADD CONSTRAINT recommendations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_email_key UNIQUE (email);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users users_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_username_key UNIQUE (username);
+
+
+--
+-- Name: drinks_ingredients drinks_ingredients_drink_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.drinks_ingredients
+    ADD CONSTRAINT drinks_ingredients_drink_id_fkey FOREIGN KEY (drink_id) REFERENCES public.drinks(id) ON DELETE CASCADE;
+
+
+--
+-- Name: drinks_ingredients drinks_ingredients_ingredient_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.drinks_ingredients
+    ADD CONSTRAINT drinks_ingredients_ingredient_id_fkey FOREIGN KEY (ingredient_id) REFERENCES public.ingredients(id) ON DELETE CASCADE;
+
+
+--
+-- Name: favorites favorites_drink_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.favorites
+    ADD CONSTRAINT favorites_drink_id_fkey FOREIGN KEY (drink_id) REFERENCES public.drinks(id) ON DELETE CASCADE;
+
+
+--
+-- Name: favorites favorites_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.favorites
+    ADD CONSTRAINT favorites_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: ratings ratings_drink_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ratings
+    ADD CONSTRAINT ratings_drink_id_fkey FOREIGN KEY (drink_id) REFERENCES public.drinks(id) ON DELETE CASCADE;
+
+
+--
+-- Name: ratings ratings_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ratings
+    ADD CONSTRAINT ratings_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: recommendations recommendations_drink_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.recommendations
+    ADD CONSTRAINT recommendations_drink_id_fkey FOREIGN KEY (drink_id) REFERENCES public.drinks(id) ON DELETE CASCADE;
+
+
+--
+-- Name: recommendations recommendations_recommend_to_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.recommendations
+    ADD CONSTRAINT recommendations_recommend_to_user_id_fkey FOREIGN KEY (recommend_to_user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: recommendations recommendations_recommender_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.recommendations
+    ADD CONSTRAINT recommendations_recommender_id_fkey FOREIGN KEY (recommender_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
