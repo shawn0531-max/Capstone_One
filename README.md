@@ -7,7 +7,7 @@ Search for different cocktails and learn how to make them. Users can add to
 a personal favorites list, rate drinks, send recommendations to other users, and  
 receive recommendations based on ingredients in their favorite drinks.  
 
-##Setup  
+## Setup  
 
 To run locally:  
 - Clone the github repository  
