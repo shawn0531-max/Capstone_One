@@ -11,7 +11,7 @@ receive recommendations based on ingredients in their favorite drinks.
 
 To run locally:  
 - Clone the github repository  
-- npm install requirements.txt  
+- pip install -r requirements.txt  
 - create a database for the seed file to place the data  
 - python seed.py
 
